@@ -1,39 +1,38 @@
 package com.example.wallet;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText productEditText;
-    EditText priceEditText;
-    TextView productsTextView;
-    TextView totalTextView;
+    Button purchaseButton;
+    TextView totalMondayTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        purchaseButton = findViewById(R.id.button_id);
+        totalMondayTextView = findViewById(R.id.total_moday_textView);
 
-        productEditText = findViewById(R.id.product_edit_text);
-        priceEditText = findViewById(R.id.price_edit_text);
-        productsTextView = findViewById(R.id.products);
-        totalTextView = findViewById(R.id.total);
-
+        Intent intent = getIntent();
+        if(intent != null) {
+            String totalMonday = intent.getStringExtra("totalMonday");
+            totalMondayTextView.setText(totalMonday);
+        }
     }
 
-    public void Calculate(View view) {
-        int newPrice = Integer.parseInt(priceEditText.getText().toString());
-        int prevPrice = Integer.parseInt(totalTextView.getText().toString());
-        String total = ""+(newPrice+prevPrice);
-        totalTextView.setText(total);
-
-        String newProduct = productEditText.getText().toString();
-        String prevproduct = productsTextView.getText().toString();
-        String products = prevproduct + "\n" + newProduct;
-        productsTextView.setText(products);
+    public void Purchase(View view) {
+        Button button = (Button)view;
+        Intent intent = new Intent(this, SecondActivity.class);
+        intent.putExtra("buttonText", button.getText());
+        startActivity(intent);
     }
+
 }
