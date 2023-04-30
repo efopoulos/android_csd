@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
@@ -19,8 +20,6 @@ public class SecondActivity extends AppCompatActivity {
     TextView productsTextView;
     TextView totalTextView;
     TextView dayTextView;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +42,7 @@ public class SecondActivity extends AppCompatActivity {
         }
 
         String day = intent.getStringExtra("buttonText");
-//        Toast.makeText(this, day, Toast.LENGTH_SHORT).show();
         dayTextView.setText(day);
-
     }
 
     public void Calculate(View view) {
@@ -59,8 +56,10 @@ public class SecondActivity extends AppCompatActivity {
         String products = prevproduct + "\n" + newProduct;
         productsTextView.setText(products);
 
+        //Μέσω intent στέλνουμε στην Main το συνολικό ποσό και σε ποια μέρα βρισκόμαστε
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("totalMonday", total);
+        intent.putExtra("total", total);
+        intent.putExtra("day", (String) dayTextView.getText());
         startActivity(intent);
     }
 
