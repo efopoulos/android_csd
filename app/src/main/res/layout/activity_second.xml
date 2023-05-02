@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".SecondActivity">
 
-    <EditText
-        android:id="@+id/price_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Price"
-        android:inputType="number|textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/calculate_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/product_edit_text"
-        app:layout_constraintVertical_bias="0.5" />
-
     <TextView
         android:id="@+id/products"
         android:layout_width="wrap_content"
@@ -30,6 +17,19 @@
         app:layout_constraintStart_toEndOf="@+id/total"
         app:layout_constraintTop_toBottomOf="@+id/calculate_button" />
 
+    <EditText
+        android:id="@+id/priceEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Price"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/calculate_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout2" />
+
     <TextView
         android:id="@+id/total"
         android:layout_width="wrap_content"
@@ -39,40 +39,147 @@
         app:layout_constraintEnd_toStartOf="@+id/products"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calculate_button" />
-
-    <EditText
-        android:id="@+id/product_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Product"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/price_edit_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calculate_button"
         app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/calculate_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Calculate"
         android:onClick="Calculate"
+        android:text="Calculate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/saveButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout2"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="Save"
+        android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/price_edit_text"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/calculate_button"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout2"
+        app:layout_constraintVertical_bias="0.501" />
 
     <TextView
         android:id="@+id/day_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/product_edit_text"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/tableLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/calculate_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/cat_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="cat1Button"
+                android:text="CAT 1" />
+
+            <Button
+                android:id="@+id/cat_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="cat1Button"
+                android:text="CAT 2" />
+
+            <Button
+                android:id="@+id/cat_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="cat1Button"
+                android:text="CAT 3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/cat_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="cat1Button"
+                android:text="CAT 4" />
+
+            <Button
+                android:id="@+id/cat_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="cat1Button"
+                android:text="CAT 5" />
+
+            <Button
+                android:id="@+id/cat_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="cat1Button"
+                android:text="CAT 6" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/cat_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="cat1Button"
+                android:text="CAT 7" />
+
+            <Button
+                android:id="@+id/cat_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="cat1Button"
+                android:text="CAT 8" />
+
+            <Button
+                android:id="@+id/cat_9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="cat1Button"
+                android:text="CAT 9" />
+        </TableRow>
+
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/catTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/calculate_button"
+        app:layout_constraintEnd_toStartOf="@+id/priceEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout2" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,14 +38,14 @@
             android:text="Button" />
 
         <Button
-            android:id="@+id/button_id"
+            android:id="@+id/mondayButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="Purchase"
             android:text="@string/button_text" />
 
         <TextView
-            android:id="@+id/total_moday_textView"
+            android:id="@+id/mondayTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
