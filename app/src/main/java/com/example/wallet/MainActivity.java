@@ -1,8 +1,16 @@
 package com.example.wallet;
 
+import static com.example.wallet.DBHandler.COLUMN_DAYS;
+import static com.example.wallet.DBHandler.COLUMN_VALUE;
+import static com.example.wallet.DBHandler.TABLE_VALUES;
+import static java.util.Calendar.MONDAY;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -59,47 +67,51 @@ public class MainActivity extends AppCompatActivity {
         purchaseButtonSunday = findViewById(R.id.Sunday_button);
         totalSundayTextView = findViewById(R.id.total_Sunday);
 
-        Intent intent = getIntent();
-
-        if(intent != null) {
-            //λαμβάνουμε το όνομα της ημέρας για την οποία εκτελέστηκε η SecondAtivity
-            String day=intent.getStringExtra("day");
-            if(day!=null){
-                if(day.equals("Monday")){
-                String totalMonday = intent.getStringExtra("total");
-                totalMondayTextView.setText(totalMonday);
-                } else if (day.equals("Tuesday")) {
-                    String totalTuesday = intent.getStringExtra("total");
-                    totalTuesdayTextView.setText(totalTuesday);
-                } else if (day.equals("Wednesday")) {
-                    String totalWednesday = intent.getStringExtra("total");
-                    totalWednesdayTextView.setText(totalWednesday);
-                }else if (day.equals("Thursday")) {
-                    String totalThursday = intent.getStringExtra("total");
-                    totalThursdayTextView.setText(totalThursday);
-                }else if (day.equals("Friday")) {
-                    String totalFriday = intent.getStringExtra("total");
-                    totalFridayTextView.setText(totalFriday);
-                }else if (day.equals("Saturday")) {
-                    String totalSaturday = intent.getStringExtra("total");
-                    totalSaturdayTextView.setText(totalSaturday);
-                }else{
-                    String totalSunday = intent.getStringExtra("total");
-                    totalSundayTextView.setText(totalSunday);
+        DBHandler dbHelper = new DBHandler(this, null, null, 1);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_VALUES, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String days = cursor.getString(cursor.getColumnIndex(COLUMN_DAYS));
+                String value = cursor.getString(cursor.getColumnIndex(COLUMN_VALUE));
+                switch(days) {
+                    case "Monday":
+                        totalMondayTextView.setText(value);
+                        break;
+                    case "Tuesday":
+                        totalTuesdayTextView.setText(value);
+                        break;
+                    case "Wednesday":
+                        totalWednesdayTextView.setText(value);
+                        break;
+                    case "Thursday":
+                        totalThursdayTextView.setText(value);
+                        break;
+                    case "Friday":
+                        totalFridayTextView.setText(value);
+                        break;
+                    case "Saturday":
+                        totalSaturdayTextView.setText(value);
+                        break;
+                    case "Sunday":
+                        totalSundayTextView.setText(value);
+                        break;
                 }
-            }
+            } while (cursor.moveToNext());
         }
-
+        cursor.close();
+        db.close();
     }
+
 
     //Συνάρτηση που μας μεταφέρει στο SecondActivity
     public void Purchase(View view) {
-        //takes a button as argument
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
         Button button = (Button)view;
+        String day = (String) button.getText();
         //Toast.makeText(this, buttonText, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, SecondActivity.class);
         intent.putExtra("buttonText", button.getText());
         startActivity(intent);
     }
-
 }

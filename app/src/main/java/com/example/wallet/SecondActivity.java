@@ -51,10 +51,17 @@ public class SecondActivity extends AppCompatActivity {
         String total = ""+(newPrice+prevPrice);
         totalTextView.setText(total);
 
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+
         String newProduct = productEditText.getText().toString();
         String prevproduct = productsTextView.getText().toString();
         String products = prevproduct + "\n" + newProduct;
         productsTextView.setText(products);
+
+        if (!total.equals("") && !dayTextView.getText().equals("")){
+            DayValue expenses = new DayValue(dayTextView.getText(), total);
+            dbHandler.addNewValue(expenses);
+        }
 
         //Μέσω intent στέλνουμε στην Main το συνολικό ποσό και σε ποια μέρα βρισκόμαστε
         Intent intent = new Intent(this, MainActivity.class);
