@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    
     Button purchaseButton;
     TextView totalMondayTextView;
     @Override
