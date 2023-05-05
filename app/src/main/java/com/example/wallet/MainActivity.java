@@ -35,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
     TextView totalSaturdayTextView;
     TextView totalSundayTextView;
 
-
-    //save the calculator's result
-    //button_id = Monday button
-    //totalMondayTextView = result of Calculator
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -2,11 +2,10 @@ package com.example.wallet;
 
 import android.util.Log;
 
-//Η αντιστοιχη κλαση της Porduct
 //Κλαση για προσωρινη φυλλαξη ζευγους μέρας-τιμής
 public class DayValue {
     private String value;
-    private String day;
+    private String day;kkkk
 
     public DayValue(CharSequence day, String value) {
         this.value = value;
