@@ -19,6 +19,16 @@
         app:layout_constraintTop_toBottomOf="@+id/product_edit_text"
         app:layout_constraintVertical_bias="0.5" />
 
+    <Spinner
+        android:id="@+id/day_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/price_edit_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/product_edit_text"
+        android:entries="@array/days" />
+
     <TextView
         android:id="@+id/products"
         android:layout_width="wrap_content"
@@ -65,15 +75,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/price_edit_text"
         app:layout_constraintVertical_bias="0.5" />
-
-    <TextView
-        android:id="@+id/day_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="day"
-        app:layout_constraintBottom_toTopOf="@+id/product_edit_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

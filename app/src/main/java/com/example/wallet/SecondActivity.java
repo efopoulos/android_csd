@@ -9,47 +9,49 @@ import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class SecondActivity extends AppCompatActivity {
-
+    Spinner day_spinner;
     EditText productEditText;
     EditText priceEditText;
     TextView productsTextView;
     TextView totalTextView;
     TextView dayTextView;
 
+    DayValue dayValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
+        day_spinner=findViewById(R.id.day_spinner);
+        dayValue=new DayValue();
         productEditText = findViewById(R.id.product_edit_text);
         priceEditText = findViewById(R.id.price_edit_text);
         productsTextView = findViewById(R.id.products);
         totalTextView = findViewById(R.id.total);
-        dayTextView = findViewById(R.id.day_textView);
-
-        Intent intent = getIntent();
-        if(savedInstanceState != null) {
-            Log.d("paok", " MPHKE ");
-            String totalExpenses = savedInstanceState.getString("totalExpenses");
-            totalTextView.setText(totalExpenses);
-        }else{
-            Log.d("paok", "DE MPHKE ");
-        }
-
-        String day = intent.getStringExtra("buttonText");
-        dayTextView.setText(day);
     }
 
     public void Calculate(View view) {
+
+        String day = day_spinner.getSelectedItem().toString();
+
+        dayValue.setDay(day);
+
         int newPrice = Integer.parseInt(priceEditText.getText().toString());
         int prevPrice = Integer.parseInt(totalTextView.getText().toString());
         String total = ""+(newPrice+prevPrice);
+
         totalTextView.setText(total);
+        dayValue.setSupermarket(total);
+        dayValue.setValue(total);
+
 
         DBHandler dbHandler = new DBHandler(this, null, null, 1);
 
@@ -58,15 +60,14 @@ public class SecondActivity extends AppCompatActivity {
         String products = prevproduct + "\n" + newProduct;
         productsTextView.setText(products);
 
-        if (!total.equals("") && !dayTextView.getText().equals("")){
-            DayValue expenses = new DayValue(dayTextView.getText(), total);
-            dbHandler.addNewValue(expenses);
+        if (!total.equals("") && !dayValue.getDay().equals("")){
+            dbHandler.addNewValue(dayValue);
         }
 
-        //Μέσω intent στέλνουμε στην Main το συνολικό ποσό και σε ποια μέρα βρισκόμαστε
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("total", total);
         intent.putExtra("day", (String) dayTextView.getText());
+        intent.putExtra("supermarket", (String) total);
         startActivity(intent);
     }
 
