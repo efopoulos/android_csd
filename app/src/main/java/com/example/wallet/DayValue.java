@@ -5,7 +5,7 @@ import android.util.Log;
 //Κλαση για προσωρινη φυλλαξη ζευγους μέρας-τιμής
 public class DayValue {
     private String value;
-    private String day;kkkk
+    private String day;
 
     public DayValue(CharSequence day, String value) {
         this.value = value;
