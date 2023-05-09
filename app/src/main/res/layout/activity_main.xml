@@ -34,49 +34,49 @@
             android:id="@+id/Monday_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="Purchase"
+            android:onClick="List"
             android:text="Monday" />
 
         <Button
             android:id="@+id/Tuesday_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="Purchase"
+            android:onClick="List"
             android:text="Tuesday" />
 
         <Button
             android:id="@+id/Wednesday_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="Purchase"
+            android:onClick="List"
             android:text="Wednesday" />
 
         <Button
             android:id="@+id/Thursday_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="Purchase"
+            android:onClick="List"
             android:text="Thursday" />
 
         <Button
             android:id="@+id/Friday_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="Purchase"
+            android:onClick="List"
             android:text="Friday" />
 
         <Button
             android:id="@+id/Saturday_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="Purchase"
+            android:onClick="List"
             android:text="Saturday" />
 
         <Button
             android:id="@+id/Sunday_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="Purchase"
+            android:onClick="List"
             android:text="Sunday" />
 
     </LinearLayout>

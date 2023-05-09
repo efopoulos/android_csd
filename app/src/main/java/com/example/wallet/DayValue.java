@@ -6,6 +6,10 @@ public class DayValue {
     private String day;
     private String supermarket;
 
+    private String entertainment;
+    private String home;
+    private String category;
+
 
     public DayValue(CharSequence day, String value) {
         this.value = value;
@@ -30,4 +34,14 @@ public class DayValue {
         return this.supermarket;
     }
     public void setSupermarket(String supermarket) {this.supermarket = supermarket;}
+
+    public void setCategory(String category) {this.category = category;}
+
+    public String getCategory() {return this.category;}
+
+    public void setEntertainment(String entertainment) {this.entertainment = entertainment; }
+    public String getEntertainment() {return this.entertainment;}
+    public void setHome(String home) {this.home = home; }
+    public String getHome() {return this.home;}
+
 }
