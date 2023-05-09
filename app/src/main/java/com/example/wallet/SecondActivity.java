@@ -5,68 +5,63 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SecondActivity extends AppCompatActivity {
-
-    EditText productEditText;
+    Spinner day_spinner;
     EditText priceEditText;
-    TextView productsTextView;
+    Spinner category_spinner;
     TextView totalTextView;
-    TextView dayTextView;
+    DayValue dayValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-        productEditText = findViewById(R.id.product_edit_text);
-        priceEditText = findViewById(R.id.price_edit_text);
-        productsTextView = findViewById(R.id.products);
         totalTextView = findViewById(R.id.total);
-        dayTextView = findViewById(R.id.day_textView);
 
-        Intent intent = getIntent();
-        if(savedInstanceState != null) {
-            Log.d("paok", " MPHKE ");
-            String totalExpenses = savedInstanceState.getString("totalExpenses");
-            totalTextView.setText(totalExpenses);
-        }else{
-            Log.d("paok", "DE MPHKE ");
-        }
-
-        String day = intent.getStringExtra("buttonText");
-        dayTextView.setText(day);
+        day_spinner = findViewById(R.id.day_spinner);
+        dayValue = new DayValue();
+        category_spinner = findViewById(R.id.category_spinner);
+        priceEditText = findViewById(R.id.price_edit_text);
     }
 
     public void Calculate(View view) {
+        String day = day_spinner.getSelectedItem().toString();
+        String selectedCategory = category_spinner.getSelectedItem().toString();
+        dayValue.setDay(day);
+        dayValue.setCategory(selectedCategory);
+
         int newPrice = Integer.parseInt(priceEditText.getText().toString());
         int prevPrice = Integer.parseInt(totalTextView.getText().toString());
         String total = ""+(newPrice+prevPrice);
+
         totalTextView.setText(total);
-
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
-
-        String newProduct = productEditText.getText().toString();
-        String prevproduct = productsTextView.getText().toString();
-        String products = prevproduct + "\n" + newProduct;
-        productsTextView.setText(products);
-
-        if (!total.equals("") && !dayTextView.getText().equals("")){
-            DayValue expenses = new DayValue(dayTextView.getText(), total);
-            dbHandler.addNewValue(expenses);
+        if (selectedCategory.equals("Supermarket")) {
+            dayValue.setSupermarket(total);
+        } else if (selectedCategory.equals("Entertainment")) {
+            dayValue.setEntertainment(total);
+        }else{
+            dayValue.setHome(total);
         }
 
-        //Μέσω intent στέλνουμε στην Main το συνολικό ποσό και σε ποια μέρα βρισκόμαστε
+        dayValue.setValue(total);
+        dayValue.setCategory(selectedCategory);
+        DBHandler dbHandler = new DBHandler(this, null, null, 3);
+
+        if (!total.equals("") && !dayValue.getDay().equals("")){
+            dbHandler.addNewValue(dayValue);
+        }
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("total", total);
-        intent.putExtra("day", (String) dayTextView.getText());
+        //intent.putExtra("supermarket", (String) total);
         startActivity(intent);
     }
 

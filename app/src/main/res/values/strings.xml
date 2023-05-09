@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Wallet</string>
     <string name="button_text">Monday</string>
+    <string-array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string-array name="category">
+        <item>Supermarket</item>
+        <item>Entertainment</item>
+        <item>Home</item>
+    </string-array>
 </resources>
