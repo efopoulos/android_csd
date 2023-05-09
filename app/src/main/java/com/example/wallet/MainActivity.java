@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             do {
                 String days = cursor.getString(cursor.getColumnIndex(COLUMN_DAYS));
                 String value = cursor.getString(cursor.getColumnIndex(COLUMN_VALUE));
-                //String supermarket = cursor.getString(cursor.getColumnIndex(COLUMN_SUPERMARKET));
 
                 dayValue.setDay(days);
                 dayValue.setValue(value);
@@ -74,9 +73,7 @@ public class MainActivity extends AppCompatActivity {
         DBHandler dbHandler = new DBHandler(this, null, null, 3);
         Button button = (Button)view;
         String day = (String) button.getText();
-        //Toast.makeText(this, buttonText, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, SecondActivity.class);
-        //intent.putExtra("buttonText", button.getText());
         startActivity(intent);
     }
 }
