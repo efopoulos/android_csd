@@ -57,26 +57,43 @@ public class DBHandler extends SQLiteOpenHelper{
         if(found==null){
             values.put(COLUMN_DAYS, dayValue.getDay());
             values.put(COLUMN_VALUE, dayValue.getValue());
+            if (category.equals("Supermarket")) {
+                values.put(COLUMN_SUPERMARKET, newValue);
+                values.put(COLUMN_ENTERTAINMENT, 0);
+                values.put(COLUMN_HOME, 0);
+            } else if (category.equals("Entertainment")) {
+                values.put(COLUMN_SUPERMARKET, 0);
+                values.put(COLUMN_ENTERTAINMENT, newValue);
+                values.put(COLUMN_HOME, 0);
+            }else{
+                values.put(COLUMN_SUPERMARKET, 0);
+                values.put(COLUMN_ENTERTAINMENT, 0);
+                values.put(COLUMN_HOME, newValue);
+            }
             db.insert(TABLE_VALUES, null, values);
         }
         else{
             String query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_VALUE + " = " + COLUMN_VALUE + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
             db.execSQL(query);
-
             // Ελέγχουμε αν έχει επιλεγεί η κατηγορία Supermarket
             if (category.equals("Supermarket")) {
                 query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_SUPERMARKET + " = " + COLUMN_SUPERMARKET + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+                db.execSQL(query);
             } else if (category.equals("Entertainment")) {
-                Log.d("GEIA", newValue);
+                Log.d("GEIA", category);
                 query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_ENTERTAINMENT + " = " + COLUMN_ENTERTAINMENT + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+                db.execSQL(query);
             }else{
                 query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_HOME + " = " + COLUMN_HOME + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+                db.execSQL(query);
+
             }
-            db.execSQL(query);
         }
         //διαγράφει οτι εχει μεσα ο πινακας
         //db.delete(TABLE_VALUES, null, null);
     }
+
+
 
     private DayValue findDay(String day_name) {
         String query = "SELECT * FROM " + TABLE_VALUES +  " WHERE " +
