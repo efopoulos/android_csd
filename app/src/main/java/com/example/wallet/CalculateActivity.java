@@ -35,11 +35,8 @@ public class CalculateActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(savedInstanceState != null) {
-            Log.d("paok", " MPHKE ");
             String totalExpenses = savedInstanceState.getString("totalExpenses");
             totalTextView.setText(totalExpenses);
-        }else{
-            Log.d("paok", "DE MPHKE ");
         }
 
         String day = intent.getStringExtra("buttonText");
@@ -54,7 +51,7 @@ public class CalculateActivity extends AppCompatActivity {
         String total = ""+(newPrice+prevPrice);
         totalTextView.setText(total);
 
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        DBHandler dbHandler = new DBHandler(this, null, null, 3);
 
         String newProduct = productEditText.getText().toString();
         String prevproduct = productsTextView.getText().toString();
@@ -69,7 +66,9 @@ public class CalculateActivity extends AppCompatActivity {
         //Μέσω intent στέλνουμε στην Main το συνολικό ποσό και σε ποια μέρα βρισκόμαστε
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("value", total);
-        intent.putExtra("position", position);
+        intent.putExtra("date", dayTextView.getText());
+        intent.putExtra("position" ,position);
+
         startActivity(intent);
     }
 

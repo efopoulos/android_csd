@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
+    //Σημερινή ημερομηνία
     private LocalDate selectedDate;
 
     @Override
@@ -42,13 +43,15 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     private void setMonthView() {
         Intent intent = getIntent();
-        int position = intent.getIntExtra("position", 0);
+        String date = intent.getStringExtra("date");
         String value = intent.getStringExtra("value");
-        Log.d("paok", "position: " + position + " value: " + value);
+        int position = intent.getIntExtra("position", 0);
+
+        Log.d("paok", "Date: " + date + " value: " + value);
 
         monthYearText.setText(monthYearFromDate(selectedDate));
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
-        ArrayList<String> totalDaysInMonth = totalDaysInMonthArray(selectedDate, position, value);
+        ArrayList<String> totalDaysInMonth = totalDaysInMonthArray(selectedDate, date, value, position);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, totalDaysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
@@ -77,7 +80,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         return daysInMonthArray;
     }
 
-    private ArrayList<String> totalDaysInMonthArray(LocalDate date, int position, String value) {
+    private ArrayList<String> totalDaysInMonthArray(LocalDate date, String insertedDate, String value, int position) {
+        DBHandler dbHandler = new DBHandler(this, null, null, 3);
+
         ArrayList<String> totalDaysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
 
@@ -86,21 +91,27 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
+
         for (int i = 1; i <= 42; i++) {
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 totalDaysInMonthArray.add(null);
 
             } else {
-//                String prev = totalDaysInMonthArray.get(position);
-//                totalDaysInMonthArray.add("" + Integer.parseInt(prev) + Integer.parseInt(value));
+                //διαλέγει τον μηνα που θα εμφανισει συμφωνα με την σημερινη ημερομηνια
+                //διαλέγει την ημέρα (position) του μηνα που θα εμφανίσει
+                String key = (i - 1) + " " + monthYearFromDate(selectedDate);
+                DayValue dayValue = dbHandler.findDay(key);
 
-
-
-                totalDaysInMonthArray.add("0");
-
-
+                if(dayValue != null){
+                    String dbValue = dayValue.getValue();
+                    String dbDate = dayValue.getDay();
+                    totalDaysInMonthArray.add(dbValue);
+                }else{
+                    totalDaysInMonthArray.add("0");
+                }
             }
         }
+
         return totalDaysInMonthArray;
     }
 
@@ -111,14 +122,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     }
 
     public void previousMonthAction(View view) {
-//        selectedDate = selectedDate.minusMonths(1);
-//        setMonthView();
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
-
-
-        DayValue dayValue = dbHandler.findDay("Sunday");
-
-        Toast.makeText(this, dayValue.getDay() + " : " + dayValue.getValue(), Toast.LENGTH_SHORT).show();
+        selectedDate = selectedDate.minusMonths(1);
+        setMonthView();
     }
 
     public void nextMonthAction(View view) {
@@ -131,7 +136,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         //Toast.makeText(this, buttonText, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CalculateActivity.class);
-        intent.putExtra("buttonText", dayText + " " + monthYearFromDate(selectedDate));
+        String date = dayText + " " + monthYearFromDate(selectedDate);
+        intent.putExtra("buttonText", date);
         intent.putExtra("position", position);
         startActivity(intent);
     }

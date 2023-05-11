@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 public class DBHandler extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     //όνομα βάσης
     private static final String DATABASE_NAME = "valuesDB.db";
     public static final String COLUMN_DAYS = "days";

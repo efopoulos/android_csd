@@ -59,7 +59,7 @@ public class WeekActivity extends AppCompatActivity {
         purchaseButtonSunday = findViewById(R.id.Sunday_button);
         totalSundayTextView = findViewById(R.id.total_Sunday);
 
-        DBHandler dbHelper = new DBHandler(this, null, null, 1);
+        DBHandler dbHelper = new DBHandler(this, null, null, 3);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_VALUES, null);
         if (cursor.moveToFirst()) {
@@ -98,7 +98,7 @@ public class WeekActivity extends AppCompatActivity {
 
     //Συνάρτηση που μας μεταφέρει στο SecondActivity
     public void Purchase(View view) {
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        DBHandler dbHandler = new DBHandler(this, null, null, 3);
         Button button = (Button)view;
         String day = (String) button.getText();
         //Toast.makeText(this, buttonText, Toast.LENGTH_SHORT).show();

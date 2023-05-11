@@ -25,7 +25,7 @@ public class DayValue {
     }
 
     public void setValue(String value) {
-        this.day = day;
+        this.value = value;
     }
     public String getValue() {
         return this.value;
