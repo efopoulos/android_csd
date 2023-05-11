@@ -61,7 +61,7 @@ public class DBHandler extends SQLiteOpenHelper{
         //db.delete(TABLE_VALUES, null, null);
     }
 
-    private DayValue findDay(String day_name) {
+    public DayValue findDay(String day_name) {
         String query = "SELECT * FROM " + TABLE_VALUES +  " WHERE " +
                 COLUMN_DAYS + " = '" + day_name + "'";
         SQLiteDatabase db = this.getWritableDatabase();
