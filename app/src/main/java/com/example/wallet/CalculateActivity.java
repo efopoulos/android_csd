@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SecondActivity extends AppCompatActivity {
+public class CalculateActivity extends AppCompatActivity {
 
     EditText productEditText;
     EditText priceEditText;
@@ -21,10 +20,12 @@ public class SecondActivity extends AppCompatActivity {
     TextView totalTextView;
     TextView dayTextView;
 
+    private int position;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_calculate);
 
         productEditText = findViewById(R.id.product_edit_text);
         priceEditText = findViewById(R.id.price_edit_text);
@@ -34,14 +35,13 @@ public class SecondActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(savedInstanceState != null) {
-            Log.d("paok", " MPHKE ");
             String totalExpenses = savedInstanceState.getString("totalExpenses");
             totalTextView.setText(totalExpenses);
-        }else{
-            Log.d("paok", "DE MPHKE ");
         }
 
         String day = intent.getStringExtra("buttonText");
+        position = intent.getIntExtra("position",0);
+//        Toast.makeText(this, " "+position, Toast.LENGTH_SHORT).show();
         dayTextView.setText(day);
     }
 
@@ -51,7 +51,7 @@ public class SecondActivity extends AppCompatActivity {
         String total = ""+(newPrice+prevPrice);
         totalTextView.setText(total);
 
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        DBHandler dbHandler = new DBHandler(this, null, null, 3);
 
         String newProduct = productEditText.getText().toString();
         String prevproduct = productsTextView.getText().toString();
@@ -65,8 +65,10 @@ public class SecondActivity extends AppCompatActivity {
 
         //Μέσω intent στέλνουμε στην Main το συνολικό ποσό και σε ποια μέρα βρισκόμαστε
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("total", total);
-        intent.putExtra("day", (String) dayTextView.getText());
+        intent.putExtra("value", total);
+        intent.putExtra("date", dayTextView.getText());
+        intent.putExtra("position" ,position);
+
         startActivity(intent);
     }
 

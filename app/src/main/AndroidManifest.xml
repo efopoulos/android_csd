@@ -12,7 +12,10 @@
         android:theme="@style/Theme.Wallet"
         tools:targetApi="31" >
         <activity
-            android:name=".SecondActivity"
+            android:name=".WeekActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CalculateActivity"
             android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity

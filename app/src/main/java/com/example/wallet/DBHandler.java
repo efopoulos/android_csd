@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 public class DBHandler extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     //όνομα βάσης
     private static final String DATABASE_NAME = "valuesDB.db";
     public static final String COLUMN_DAYS = "days";
@@ -61,7 +61,7 @@ public class DBHandler extends SQLiteOpenHelper{
         //db.delete(TABLE_VALUES, null, null);
     }
 
-    private DayValue findDay(String day_name) {
+    public DayValue findDay(String day_name) {
         String query = "SELECT * FROM " + TABLE_VALUES +  " WHERE " +
                 COLUMN_DAYS + " = '" + day_name + "'";
         SQLiteDatabase db = this.getWritableDatabase();
