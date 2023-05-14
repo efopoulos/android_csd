@@ -1,21 +1,15 @@
 package com.example.wallet;
 
-import static com.example.wallet.DBHandler.COLUMN_DAYS;
-import static com.example.wallet.DBHandler.COLUMN_VALUE;
-import static com.example.wallet.DBHandler.TABLE_VALUES;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -47,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         String value = intent.getStringExtra("value");
         int position = intent.getIntExtra("position", 0);
 
-        Log.d("paok", "Date: " + date + " value: " + value);
-
         monthYearText.setText(monthYearFromDate(selectedDate));
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
         ArrayList<String> totalDaysInMonth = totalDaysInMonthArray(selectedDate, date, value, position);
@@ -59,20 +51,23 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
+    //δημιουργία λίστας με τις μέρες του μήνα
     private ArrayList<String> daysInMonthArray(LocalDate date) {
         //edo 3anadimiourgeite den prepei
+        //υπολογισμός μέρες του μήνα
         ArrayList<String> daysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
 
         int daysInMonth = yearMonth.lengthOfMonth();
 
+        //μέρα της εβδομάδας που ξεκινάει ο μήνας
         LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
+        //γεμίζει την λίστα με τις μέρες της εδβομάδας
         for (int i = 1; i <= 42; i++) {
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 daysInMonthArray.add("");
-
             } else {
                 daysInMonthArray.add(String.valueOf(i - dayOfWeek));
             }
@@ -80,8 +75,10 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         return daysInMonthArray;
     }
 
+
+    //ελεγχος για κάθε θέση του πίνακα
     private ArrayList<String> totalDaysInMonthArray(LocalDate date, String insertedDate, String value, int position) {
-        DBHandler dbHandler = new DBHandler(this, null, null, 3);
+        DBHandler dbHandler = new DBHandler(this, null, null, 4);
 
         ArrayList<String> totalDaysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
@@ -91,11 +88,10 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
-
+        //ελέγχεται για κάθε θέση αν αντιστοιχεί σε μια ημέρα του τρέχοντος μήνα
         for (int i = 1; i <= 42; i++) {
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 totalDaysInMonthArray.add(null);
-
             } else {
                 //διαλέγει τον μηνα που θα εμφανισει συμφωνα με την σημερινη ημερομηνια
                 //διαλέγει την ημέρα (position) του μηνα που θα εμφανίσει
@@ -115,25 +111,27 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         return totalDaysInMonthArray;
     }
 
+    //επιστροφή μήνα και έτος
     private String monthYearFromDate(LocalDate date) {
         DateTimeFormatter formatter = null;
         formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
         return date.format(formatter);
     }
 
+    //προηγοημενος-επομενος μηνας
     public void previousMonthAction(View view) {
         selectedDate = selectedDate.minusMonths(1);
         setMonthView();
     }
-
     public void nextMonthAction(View view) {
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
     }
 
+    //με κλικ στο ημερολόγιο -> CalculateActivity
+    //υπολογίζει την ημερομηνία που επιλέχθηκε
     @Override
     public void onItemClick(int position, String dayText) {
-
         //Toast.makeText(this, buttonText, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CalculateActivity.class);
         String date = dayText + " " + monthYearFromDate(selectedDate);

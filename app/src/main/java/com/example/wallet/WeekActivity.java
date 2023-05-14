@@ -98,7 +98,7 @@ public class WeekActivity extends AppCompatActivity {
 
     //Συνάρτηση που μας μεταφέρει στο SecondActivity
     public void Purchase(View view) {
-        DBHandler dbHandler = new DBHandler(this, null, null, 3);
+        DBHandler dbHandler = new DBHandler(this, null, null, 4);
         Button button = (Button)view;
         String day = (String) button.getText();
         //Toast.makeText(this, buttonText, Toast.LENGTH_SHORT).show();
