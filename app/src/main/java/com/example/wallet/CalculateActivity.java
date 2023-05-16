@@ -33,8 +33,6 @@ public class CalculateActivity extends AppCompatActivity {
 
         dayValue = new DayValue();
         priceEditText = findViewById(R.id.price_edit_text);
-        productsTextView = findViewById(R.id.products);
-        totalTextView = findViewById(R.id.total);
         dayTextView = findViewById(R.id.day_textView);
         category_spinner = findViewById(R.id.category_spinner);
 
