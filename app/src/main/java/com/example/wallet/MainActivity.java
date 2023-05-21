@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         return daysInMonthArray;
     }
 
-
     //ελεγχος για κάθε θέση του πίνακα
     private ArrayList<String> totalDaysInMonthArray(LocalDate date, String insertedDate, String value, int position) {
         DBHandler dbHandler = new DBHandler(this, null, null, 4);

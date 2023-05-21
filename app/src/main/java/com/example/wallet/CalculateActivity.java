@@ -73,5 +73,4 @@ public class CalculateActivity extends AppCompatActivity {
         intent.putExtra("day", dayTextView.getText());
         startActivity(intent);
     }
-
 }
