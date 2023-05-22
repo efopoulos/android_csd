@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DayFragment">
+    tools:context=".MonthExpenses">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_width="355dp"
             android:layout_height="41dp"
             android:layout_marginTop="72dp"
-            android:text="Day"
+            android:text="Month"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.714"
@@ -23,20 +23,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/supermarket_id"
+            android:id="@+id/monthsupermarket_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:text="Supermarket"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/supermarket_value"
+            app:layout_constraintEnd_toStartOf="@+id/monthsupermarket_value"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/month_id" />
 
         <TextView
-            android:id="@+id/entertainment_id"
+            android:id="@+id/monthentertainment_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
@@ -45,10 +45,10 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintHorizontal_bias="0.25"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/supermarket_id" />
+            app:layout_constraintTop_toBottomOf="@+id/monthsupermarket_id" />
 
         <TextView
-            android:id="@+id/home_id"
+            android:id="@+id/monthhome_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -57,10 +57,10 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintHorizontal_bias="0.117"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/entertainment_id" />
+            app:layout_constraintTop_toBottomOf="@+id/monthentertainment_id" />
 
         <TextView
-            android:id="@+id/total_id"
+            android:id="@+id/monthtotal_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -69,7 +69,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintHorizontal_bias="0.11"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_id" />
+            app:layout_constraintTop_toBottomOf="@+id/monthhome_id" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -79,7 +79,7 @@
             app:layout_constraintGuide_begin="190dp" />
 
         <TextView
-            android:id="@+id/supermarket_value"
+            android:id="@+id/monthsupermarket_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
@@ -90,7 +90,7 @@
             app:layout_constraintTop_toBottomOf="@+id/month_id" />
 
         <TextView
-            android:id="@+id/entertainment_value"
+            android:id="@+id/monthentertainment_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -98,22 +98,21 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/supermarket_value" />
+            app:layout_constraintTop_toBottomOf="@+id/monthsupermarket_value" />
 
         <TextView
-            android:id="@+id/home_value"
+            android:id="@+id/monthhome_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="36dp"
             android:text="0"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.471"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/entertainment_value" />
+            app:layout_constraintTop_toBottomOf="@+id/monthentertainment_value" />
 
         <TextView
-            android:id="@+id/total_value"
+            android:id="@+id/monthtotal_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -121,17 +120,17 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.469"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/home_value"
-            app:layout_constraintVertical_bias="0.064" />
+            app:layout_constraintTop_toBottomOf="@+id/monthhome_value"
+            app:layout_constraintVertical_bias="0.046" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="total_value" />
+        app:constraint_referenced_ids="monthtotal_value" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

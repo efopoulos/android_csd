@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private LocalDate selectedDate;
     private Button totalMonthExpenses;
     private ArrayList<String> totalDaysInMonthArray;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,6 +152,13 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         String date = dayText + " " + monthYearFromDate(selectedDate);
         intent.putExtra("buttonText", date);
         intent.putExtra("position", position);
+        startActivity(intent);
+    }
+    public void MonthExpenses(View view){
+        Log.d("month1", monthYearFromDate(selectedDate));
+
+        Intent intent = new Intent(this, MonthExpenses.class);
+        intent.putExtra("month", monthYearFromDate(selectedDate));
         startActivity(intent);
     }
 
