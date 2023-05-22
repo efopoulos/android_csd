@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.time.LocalDate;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private RecyclerView calendarRecyclerView;
     //Σημερινή ημερομηνία
     private LocalDate selectedDate;
+    private Button totalMonthExpenses;
+    private ArrayList<String> totalDaysInMonthArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +32,23 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         monthYearText = findViewById(R.id.monthYearTV);
+        totalMonthExpenses = findViewById(R.id.month_expenses);
 
         selectedDate = LocalDate.now();
 
         setMonthView();
+        String sum = Integer.toString(sum());
+        totalMonthExpenses.setText(sum);
+
+    }
+    private int sum(){
+        int sum = 0;
+        for (int i = 0; i < totalDaysInMonthArray.size(); i++) {
+            if ( totalDaysInMonthArray.get(i)!= null) {
+                sum += Integer.parseInt(totalDaysInMonthArray.get(i));
+            }
+        }
+        return sum;
     }
 
     private void setMonthView() {
@@ -79,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private ArrayList<String> totalDaysInMonthArray(LocalDate date, String insertedDate, String value, int position) {
         DBHandler dbHandler = new DBHandler(this, null, null, 4);
 
-        ArrayList<String> totalDaysInMonthArray = new ArrayList<>();
+        totalDaysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
 
         int daysInMonth = yearMonth.lengthOfMonth();
