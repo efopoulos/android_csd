@@ -37,18 +37,17 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         selectedDate = LocalDate.now();
 
         setMonthView();
-        String sum = Integer.toString(sum());
-        totalMonthExpenses.setText(sum);
 
     }
-    private int sum(){
+
+    private void monthlySum() {
         int sum = 0;
         for (int i = 0; i < totalDaysInMonthArray.size(); i++) {
-            if ( totalDaysInMonthArray.get(i)!= null) {
+            if (totalDaysInMonthArray.get(i) != null) {
                 sum += Integer.parseInt(totalDaysInMonthArray.get(i));
             }
         }
-        return sum;
+        totalMonthExpenses.setText(Integer.toString(sum));
     }
 
     private void setMonthView() {
@@ -65,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+        monthlySum();
     }
 
     //δημιουργία λίστας με τις μέρες του μήνα
@@ -102,22 +102,23 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
-
+        int emptyCells = 0;
         //ελέγχεται για κάθε θέση αν αντιστοιχεί σε μια ημέρα του τρέχοντος μήνα
         for (int i = 1; i <= 42; i++) {
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 totalDaysInMonthArray.add(null);
+                emptyCells = i;
             } else {
                 //διαλέγει τον μηνα που θα εμφανισει συμφωνα με την σημερινη ημερομηνια
                 //διαλέγει την ημέρα (position) του μηνα που θα εμφανίσει
-                String key = (i - 1) + " " + monthYearFromDate(selectedDate);
+                String key = (i - emptyCells) + " " + monthYearFromDate(selectedDate);
                 DayValue dayValue = dbHandler.findDay(key);
 
-                if(dayValue != null){
+                if (dayValue != null) {
                     String dbValue = dayValue.getValue();
                     String dbDate = dayValue.getDay();
                     totalDaysInMonthArray.add(dbValue);
-                }else{
+                } else {
                     totalDaysInMonthArray.add("0");
                 }
             }
@@ -138,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         selectedDate = selectedDate.minusMonths(1);
         setMonthView();
     }
+
     public void nextMonthAction(View view) {
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
@@ -147,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     //υπολογίζει την ημερομηνία που επιλέχθηκε
     @Override
     public void onItemClick(int position, String dayText) {
-        //Toast.makeText(this, buttonText, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CalculateActivity.class);
         String date = dayText + " " + monthYearFromDate(selectedDate);
         intent.putExtra("buttonText", date);
