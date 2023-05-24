@@ -123,18 +123,40 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="500dp">
+        android:layout_height="455dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <LinearLayout
+        android:id="@+id/bug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/total_budget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total budget: " />
+
+        <Button
+            android:id="@+id/budget_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="ChangeBudgetActivity"
+            android:text="Budget button" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/month_expenses"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onClick="MonthExpenses"
+        android:layout_width="431dp"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
+        android:onClick="MonthExpenses"
         android:text="Month Expenses"
         android:textSize="24sp" />
+
 </LinearLayout>
 
 

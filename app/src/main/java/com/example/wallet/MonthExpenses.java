@@ -1,19 +1,28 @@
 package com.example.wallet;
+
 import static com.example.wallet.DBHandler.COLUMN_DAYS;
 import static com.example.wallet.DBHandler.COLUMN_ENTERTAINMENT;
 import static com.example.wallet.DBHandler.COLUMN_HOME;
 import static com.example.wallet.DBHandler.COLUMN_SUPERMARKET;
 import static com.example.wallet.DBHandler.COLUMN_VALUE;
 import static com.example.wallet.DBHandler.TABLE_VALUES;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
 
 public class MonthExpenses  extends MainActivity{
     TextView monthTextView;
@@ -78,6 +87,21 @@ public class MonthExpenses  extends MainActivity{
         monthSupermarketTextView.setText(String.valueOf(monthlySupermarket));
         monthEntertainmentTextView.setText(String.valueOf(monthlyEntertainment));
         monthHomeTextView.setText(String.valueOf(monthlyHome));
+
+        PieChart pieChart = findViewById(R.id.pie_chart);
+        pieChart.animateXY(1000, 1000);
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(monthlySupermarket, "Supermarket"));
+        entries.add(new PieEntry(monthlyEntertainment, "Entertainment"));
+        entries.add(new PieEntry(monthlyHome, "Home"));
+
+        PieDataSet dataSet = new PieDataSet(entries, "Expenses");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        PieData pieData = new PieData(dataSet);
+        pieChart.setData(pieData);
+        pieChart.invalidate();
     }
 
     public boolean onSupportNavigateUp() {

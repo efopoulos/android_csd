@@ -15,6 +15,9 @@
             android:name=".MonthExpenses"
             android:exported="false" />
         <activity
+            android:name=".ChangeBudgetActivity"
+            android:exported="false" />
+        <activity
             android:name=".WeekActivity"
             android:parentActivityName=".MainActivity"
             android:exported="false" />

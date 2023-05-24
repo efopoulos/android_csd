@@ -1,16 +1,17 @@
 package com.example.wallet;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     //Σημερινή ημερομηνία
     private LocalDate selectedDate;
     private Button totalMonthExpenses;
+    private Button budgetButton;
+
     private ArrayList<String> totalDaysInMonthArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         monthYearText = findViewById(R.id.monthYearTV);
         totalMonthExpenses = findViewById(R.id.month_expenses);
-
+        budgetButton = findViewById(R.id.budget_button);
         selectedDate = LocalDate.now();
 
         setMonthView();
@@ -46,7 +49,30 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 sum += Integer.parseInt(totalDaysInMonthArray.get(i));
             }
         }
-        totalMonthExpenses.setText(Integer.toString(sum));
+
+        int budget = 500;
+
+        Intent intent = getIntent();
+        String userInput = intent.getStringExtra("userInput");
+
+        if (userInput != null) {
+            if(Integer.parseInt(userInput) > budget){
+                Toast.makeText(this, "+" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
+            }else if(Integer.parseInt(userInput) > budget){
+                Toast.makeText(this, "-" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
+            }
+            budgetButton.setText(userInput);
+            budget = Integer.parseInt(userInput);
+        }else{
+            budgetButton.setText(Integer.toString(budget));
+        }
+        if(sum >= budget){
+            totalMonthExpenses.setBackgroundColor(Color.RED);
+            totalMonthExpenses.setText(Integer.toString(sum));
+        }else {
+            totalMonthExpenses.setText(Integer.toString(sum));
+        }
+
     }
 
     private void setMonthView() {
@@ -155,20 +181,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         startActivity(intent);
     }
     public void MonthExpenses(View view){
-        Log.d("month1", monthYearFromDate(selectedDate));
-
         Intent intent = new Intent(this, MonthExpenses.class);
         intent.putExtra("month", monthYearFromDate(selectedDate));
         startActivity(intent);
     }
 
-
+    public void ChangeBudgetActivity(View view){
+        Intent intent = new Intent(this, ChangeBudgetActivity.class);
+        intent.putExtra("budgetNow", budgetButton.getText().toString());
+        startActivity(intent);
+    }
 }
-
-
-
-
-
-
-
-
