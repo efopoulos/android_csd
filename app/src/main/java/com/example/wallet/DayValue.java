@@ -1,7 +1,5 @@
 package com.example.wallet;
 
-import android.util.Log;
-
 //Κλαση για προσωρινη φυλλαξη ζευγους μέρας-τιμής
 public class DayValue {
     private String value;
@@ -10,6 +8,7 @@ public class DayValue {
     private String entertainment;
     private String home;
     private String category;
+
 
 
     public DayValue(CharSequence day, String value) {

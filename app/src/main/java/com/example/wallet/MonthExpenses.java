@@ -10,7 +10,6 @@ import static com.example.wallet.DBHandler.TABLE_VALUES;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -107,6 +106,13 @@ public class MonthExpenses  extends MainActivity{
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("totalExpenses", monthTotalTextView.getText().toString());
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
     }
 
     public void onSaveInstanceState(@NonNull Bundle outState) {

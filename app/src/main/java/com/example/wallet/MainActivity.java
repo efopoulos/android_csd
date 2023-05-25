@@ -3,7 +3,6 @@ package com.example.wallet;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         int budget = 500;
 
         Intent intent = getIntent();
-        String userInput = intent.getStringExtra("userInput");
+        String userInput = BudgetManager.getBudget();
 
         if (userInput != null) {
             if(Integer.parseInt(userInput) > budget){

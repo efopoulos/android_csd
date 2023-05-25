@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 public class ChangeBudgetActivity extends MainActivity{
     Button BudgetButton;
@@ -30,8 +27,10 @@ public class ChangeBudgetActivity extends MainActivity{
 
     public void Change(View view) {
         String userInput = MonthBudget.getText().toString();
+        if (!userInput.isEmpty()) {
+            BudgetManager.setBudget(userInput);
+        }
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("userInput", userInput);
         startActivity(intent);
     }
 
@@ -39,7 +38,7 @@ public class ChangeBudgetActivity extends MainActivity{
         onBackPressed();
         return true;
     }
-    public void onSaveInstanceState(@NonNull Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         outState.putString("MonthBudget", MonthBudget.getText().toString());
         super.onSaveInstanceState(outState);
     }
