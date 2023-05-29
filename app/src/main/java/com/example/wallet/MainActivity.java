@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private Button totalMonthExpenses;
     private Button budgetButton;
 
+    BottomNavigationView bottomNavigationView;
+
     private ArrayList<String> totalDaysInMonthArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +40,24 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         totalMonthExpenses = findViewById(R.id.month_expenses);
         budgetButton = findViewById(R.id.budget_button);
         selectedDate = LocalDate.now();
-
         setMonthView();
+        monthlySum();
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_main:
+                    Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    return true;
+                case R.id.action_month_expenses:
+                    // Ανακατεύθυνση στην κλάση MonthExpenses
+                    Intent monthExpensesIntent = new Intent(MainActivity.this, MonthExpenses.class);
+                    monthExpensesIntent.putExtra("month", monthYearFromDate(selectedDate));
+                    startActivity(monthExpensesIntent);
+                    return true;
+            }
+            return false;
+        });
 
     }
 
@@ -171,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     //με κλικ στο ημερολόγιο -> CalculateActivity
     //υπολογίζει την ημερομηνία που επιλέχθηκε
-    @Override
+    //@Override
     public void onItemClick(int position, String dayText) {
         Intent intent = new Intent(this, CalculateActivity.class);
         String date = dayText + " " + monthYearFromDate(selectedDate);

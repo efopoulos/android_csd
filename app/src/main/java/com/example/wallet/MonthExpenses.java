@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -30,17 +32,37 @@ public class MonthExpenses  extends MainActivity{
     TextView monthHomeTextView;
     TextView monthTotalTextView;
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_month);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         monthTextView = findViewById(R.id.month_id);
         monthSupermarketTextView = findViewById(R.id.monthsupermarket_value);
         monthEntertainmentTextView = findViewById(R.id.monthentertainment_value);
         monthHomeTextView = findViewById(R.id.monthhome_value);
         monthTotalTextView = findViewById(R.id.monthtotal_value);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.action_month_expenses);
 
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_main:
+                        // Ανακατεύθυνση στην MainActivity
+                        Intent mainIntent = new Intent(MonthExpenses.this, MainActivity.class);
+                        startActivity(mainIntent);
+                        return true;
+                    case R.id.action_month_expenses:
+                        // Ανακατεύθυνση στην κλάση MonthExpenses
+                        Intent monthExpensesIntent = new Intent(MonthExpenses.this, MonthExpenses.class);
+                        startActivity(monthExpensesIntent);
+                        return true;
+                }
+                return false;
+            }
+        });
         Intent intent = getIntent();
         String month = intent.getStringExtra("month");
 
@@ -103,17 +125,9 @@ public class MonthExpenses  extends MainActivity{
         pieChart.invalidate();
     }
 
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 
-    public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.putExtra("totalExpenses", monthTotalTextView.getText().toString());
-        setResult(RESULT_OK, intent);
-        super.onBackPressed();
-    }
+
+
 
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString("totalExpenses", monthTotalTextView.getText().toString());
