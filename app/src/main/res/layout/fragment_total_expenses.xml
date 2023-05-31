@@ -125,16 +125,6 @@
             app:layout_constraintTop_toBottomOf="@+id/monthhome_value"
             app:layout_constraintVertical_bias="0.046" />
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pie_chart"
-            android:layout_width="365dp"
-            android:layout_height="283dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/monthtotal_id" />
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
@@ -143,8 +133,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pie_chart"
-            app:layout_constraintVertical_bias="0.0"
             app:menu="@menu/bottom_nav_menu" />
 
 

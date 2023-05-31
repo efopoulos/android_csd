@@ -3,6 +3,7 @@ package com.example.wallet;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class StatisticsFragment extends Fragment {
     private static final String SUPERMARKET = "supermarket";
     private static final String ENTERTAINMENT = "entertainment";
     private static final String HOME = "home";
+    BudgetManager budget;
 
     PieChart pieChart;
     BarChart barChart;
@@ -64,6 +66,7 @@ public class StatisticsFragment extends Fragment {
         this.supermarket = supermarket;
         this.entertainment = entertainment;
         this.home = home;
+        Log.d("paok", String.valueOf(total));
     }
 
     @Override
@@ -73,9 +76,11 @@ public class StatisticsFragment extends Fragment {
         pieChart = view.findViewById(R.id.pie_chart);
         barChart = view.findViewById(R.id.barChart);
 
-        ArrayList<BarEntry> visitors = new ArrayList<>();
+
+        ArrayList<BarEntry> expenses = new ArrayList<>();
         ArrayList<String> days = new ArrayList<>();
         ArrayList<Integer> totals = new ArrayList<>();
+        String MainMonth = month;
 
         DBHandler dbHandler = new DBHandler(getActivity(), null, null, 1);
         SQLiteDatabase db = dbHandler.getReadableDatabase();
@@ -88,9 +93,16 @@ public class StatisticsFragment extends Fragment {
             do {
                 String day = cursor.getString(0);
                 int total = cursor.getInt(1);
+                String DBDay = String.valueOf(day);
+                String DBDayWithoutFirstCharacter = DBDay.substring(2);
 
-                days.add(day);
-                totals.add(total);
+                DBDayWithoutFirstCharacter = DBDayWithoutFirstCharacter.trim();
+                MainMonth = MainMonth.trim();
+                if (DBDayWithoutFirstCharacter.equals(MainMonth)) {
+                    days.add(day);
+                    totals.add(total);
+                }
+
             } while (cursor.moveToNext());
         }
 
@@ -100,10 +112,10 @@ public class StatisticsFragment extends Fragment {
         for (int i = 0; i < days.size(); i++) {
             String day = days.get(i);
             int total = totals.get(i);
-            visitors.add(new BarEntry(i, total));
+            expenses.add(new BarEntry(i, total));
         }
 
-        BarDataSet barDataSet = new BarDataSet(visitors, "Visitors");
+        BarDataSet barDataSet = new BarDataSet(expenses, "Expenses");
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
         BarData barData = new BarData(barDataSet);
