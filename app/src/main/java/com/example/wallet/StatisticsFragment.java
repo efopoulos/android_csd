@@ -3,7 +3,6 @@ package com.example.wallet;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,12 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class StatisticsFragment extends Fragment {
 
@@ -66,7 +70,6 @@ public class StatisticsFragment extends Fragment {
         this.supermarket = supermarket;
         this.entertainment = entertainment;
         this.home = home;
-        Log.d("paok", String.valueOf(total));
     }
 
     @Override
@@ -110,30 +113,63 @@ public class StatisticsFragment extends Fragment {
         db.close();
 
         for (int i = 0; i < days.size(); i++) {
-            String day = days.get(i);
             int total = totals.get(i);
             expenses.add(new BarEntry(i, total));
         }
 
-        BarDataSet barDataSet = new BarDataSet(expenses, "Expenses");
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-
-        BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(0.9f);
+        //ταξινομεί τις ημέρες
+        Comparator<String> dateComparator = new Comparator<String>() {
+            @Override
+            public int compare(String date1, String date2) {
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
+                    Date d1 = sdf.parse(date1);
+                    Date d2 = sdf.parse(date2);
+                    return ((Date) d1).compareTo(d2);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        };
+        Collections.sort(days, dateComparator);
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setGranularity(1f);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
 
-        barChart.animateY(1000);
+        barChart.setHorizontalScrollBarEnabled(true);
+        barChart.getXAxis().setGranularity(1f);
+        barChart.getXAxis().setGranularityEnabled(true);
+        barChart.getXAxis().setLabelCount(days.size());
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getXAxis().setTextSize(7f);
+        barChart.getXAxis().setLabelRotationAngle(80);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getAxisRight().setEnabled(false);
+        barChart.getDescription().setEnabled(false);
+        barChart.getLegend().setEnabled(false);
+        barChart.setFitBars(true);
+        barChart.setDragEnabled(true);
+        barChart.setScaleEnabled(false);
+        barChart.setPinchZoom(false);
+
+        BarDataSet barDataSet = new BarDataSet(expenses, "Expenses");
+        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        BarData barData = new BarData(barDataSet);
+        barData.setBarWidth(0.9f);
         barChart.setData(barData);
         barChart.setFitBars(true);
         barChart.invalidate();
         barChart.animateY(1000);
-        barChart.setData(barData);
-        barChart.setFitBars(true);
-        barChart.invalidate();
+
+
+        barChart.setScaleEnabled(true);
+        barChart.setPinchZoom(true);
+        barChart.setDoubleTapToZoomEnabled(false);
+        barChart.setDragEnabled(true);
+
+
 
         pieChart.animateXY(1000, 1000);
         ArrayList<PieEntry> entries1 = new ArrayList<>();

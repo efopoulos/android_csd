@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,11 @@ public class TotalExpensesFragment extends Fragment {
     private TextView monthTextView;
     private TextView totalTextView;
     private TextView supermarketTextView;
+    private TextView supermarketPercentTextView;
+    private TextView entertainmentPercentTextView;
+    private TextView homePercentTextView;
+
+
     private TextView entertainmentTextView;
     private TextView homeTextView;
 
@@ -27,6 +33,8 @@ public class TotalExpensesFragment extends Fragment {
     private static final String SUPERMARKET = "supermarket";
     private static final String ENTERTAINMENT = "entertainment";
     private static final String HOME = "home";
+    private TotalExpensesFragment existingTotalExpensesFragment;
+
 
     public TotalExpensesFragment(){
     }
@@ -57,14 +65,37 @@ public class TotalExpensesFragment extends Fragment {
         monthTextView = view.findViewById(R.id.month_id);
         totalTextView = view.findViewById(R.id.monthtotal_value);
         supermarketTextView = view.findViewById(R.id.monthsupermarket_value);
+        supermarketPercentTextView = view.findViewById(R.id.supermarket_percent);
         entertainmentTextView = view.findViewById(R.id.monthentertainment_value);
+        entertainmentPercentTextView = view.findViewById(R.id.entertainment_percent);
         homeTextView = view.findViewById(R.id.monthhome_value);
+        homePercentTextView = view.findViewById(R.id.home_percent);
+
+        int maxProgress = 100;
 
         monthTextView.setText(month);
         totalTextView.setText(String.valueOf(total));
+
         supermarketTextView.setText(String.valueOf(supermarket));
+        ProgressBar progressBarSupermarket = view.findViewById(R.id.progressBarSupermarket);
+        int supermarketValue = Integer.parseInt(supermarketTextView.getText().toString());
+        int supermarketPercentage = (supermarketValue * maxProgress) / total;
+        progressBarSupermarket.setProgress(supermarketPercentage);
+        supermarketPercentTextView.setText(String.valueOf(supermarketPercentage) + "%");
+
         entertainmentTextView.setText(String.valueOf(entertainment));
+        ProgressBar progressBarEntertainment = view.findViewById(R.id.progressBarEntertainment);
+        int entertainmentValue = Integer.parseInt(entertainmentTextView.getText().toString());
+        int entertainmentPercentage = (entertainmentValue * maxProgress) / total;
+        progressBarEntertainment.setProgress(entertainmentPercentage);
+        entertainmentPercentTextView.setText(String.valueOf(entertainmentPercentage) + "%");
+
         homeTextView.setText(String.valueOf(home));
+        ProgressBar progressBarHome = view.findViewById(R.id.progressBarHome);
+        int homeValue = Integer.parseInt(homeTextView.getText().toString());
+        int homePercentage = (homeValue * maxProgress) / total;
+        progressBarHome.setProgress(homePercentage);
+        homePercentTextView.setText(String.valueOf(homePercentage) + "%");
 
         return view;
     }

@@ -11,21 +11,30 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
-public class MonthExpenses  extends MainActivity{
+public class MonthExpenses  extends MainActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    BottomNavigationView bottomNavigationView;
     TotalExpensesFragment totalExpensesFragment = new TotalExpensesFragment();
     StatisticsFragment statisticsFragment = new StatisticsFragment();
+
+    private BudgetManager budgetManager = new BudgetManager();
+    private boolean isViewPagerSetup = false;
+    TotalExpensesFragment existingTotalExpensesFragment;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,14 +42,6 @@ public class MonthExpenses  extends MainActivity{
 
         tabLayout=findViewById(R.id.tablelayout);
         viewPager=findViewById(R.id.viewpager);
-
-        tabLayout.setupWithViewPager(viewPager);
-
-        VPAdapter vpAdapter = new VPAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        vpAdapter.addFragment(new TotalExpensesFragment(),"TotalExpenses");
-        vpAdapter.addFragment(new StatisticsFragment(),"Statistics");
-        viewPager.setAdapter(vpAdapter);
-
 
         Intent intent = getIntent();
         String month = intent.getStringExtra("month");
@@ -105,6 +106,7 @@ public class MonthExpenses  extends MainActivity{
 
 
         });
+        boolean showBadge = getIntent().getBooleanExtra("showBadge", false);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.action_month_expenses);
@@ -113,19 +115,23 @@ public class MonthExpenses  extends MainActivity{
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_main:
-                        // Ανακατεύθυνση στην MainActivity
                         Intent mainIntent = new Intent(MonthExpenses.this, MainActivity.class);
                         startActivity(mainIntent);
                         return true;
                     case R.id.action_month_expenses:
-                        // Ανακατεύθυνση στην κλάση MonthExpenses
                         Intent monthExpensesIntent = new Intent(MonthExpenses.this, MonthExpenses.class);
                         startActivity(monthExpensesIntent);
+                        finish();
                         return true;
                 }
                 return false;
             }
         });
+        if (showBadge) {
+            BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.action_month_expenses);
+            badgeDrawable.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+            badgeDrawable.setVisible(true);
+        }
 
         }
 

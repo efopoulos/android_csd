@@ -1,7 +1,6 @@
 package com.example.wallet;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,9 +8,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
@@ -24,11 +25,13 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private RecyclerView calendarRecyclerView;
     //Σημερινή ημερομηνία
     private LocalDate selectedDate;
-    private Button totalMonthExpenses;
     private Button budgetButton;
 
     BottomNavigationView bottomNavigationView;
 
+    int budget = 500;
+
+    String value;
     private ArrayList<String> totalDaysInMonthArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +40,12 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         monthYearText = findViewById(R.id.monthYearTV);
-        totalMonthExpenses = findViewById(R.id.month_expenses);
         budgetButton = findViewById(R.id.budget_button);
         selectedDate = LocalDate.now();
         setMonthView();
         monthlySum();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_main:
@@ -50,9 +53,10 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                     startActivity(mainIntent);
                     return true;
                 case R.id.action_month_expenses:
-                    // Ανακατεύθυνση στην κλάση MonthExpenses
+
                     Intent monthExpensesIntent = new Intent(MainActivity.this, MonthExpenses.class);
                     monthExpensesIntent.putExtra("month", monthYearFromDate(selectedDate));
+                    monthExpensesIntent.putExtra("showBadge", bottomNavigationView.getBadge(R.id.action_month_expenses) != null);
                     startActivity(monthExpensesIntent);
                     return true;
             }
@@ -69,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             }
         }
 
-        int budget = 500;
 
         Intent intent = getIntent();
         String userInput = BudgetManager.getBudget();
@@ -80,16 +83,17 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             }else if(Integer.parseInt(userInput) > budget){
                 Toast.makeText(this, "-" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
             }
-            budgetButton.setText(userInput);
             budget = Integer.parseInt(userInput);
-        }else{
-            budgetButton.setText(Integer.toString(budget));
         }
-        if(sum >= budget){
-            totalMonthExpenses.setBackgroundColor(Color.RED);
-            totalMonthExpenses.setText(Integer.toString(sum));
-        }else {
-            totalMonthExpenses.setText(Integer.toString(sum));
+        budgetButton.setText(Integer.toString(budget));
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        if (budget < sum) {
+            BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.action_month_expenses);
+            badgeDrawable.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+            badgeDrawable.setVisible(true);
+        } else {
+            bottomNavigationView.removeBadge(R.id.action_month_expenses);
         }
 
     }
@@ -97,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private void setMonthView() {
         Intent intent = getIntent();
         String date = intent.getStringExtra("date");
-        String value = intent.getStringExtra("value");
+        value = intent.getStringExtra("value");
         int position = intent.getIntExtra("position", 0);
 
         monthYearText.setText(monthYearFromDate(selectedDate));
