@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,7 @@ public class MonthExpenses  extends MainActivity {
                 String entertainment = cursor.getString(cursor.getColumnIndex(COLUMN_ENTERTAINMENT));
                 String home = cursor.getString(cursor.getColumnIndex(COLUMN_HOME));
                 String DBDay = days;
+                Log.d("paok", "onCreate: "+ DBDay);
                 String DBDayWithoutFirstCharacter = DBDay.substring(2);
                 //αφαιρούμε τα κενά
                 DBDayWithoutFirstCharacter = DBDayWithoutFirstCharacter.trim();

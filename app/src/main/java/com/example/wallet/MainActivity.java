@@ -1,7 +1,9 @@
 package com.example.wallet;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,10 +28,11 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     //Σημερινή ημερομηνία
     private LocalDate selectedDate;
     private Button budgetButton;
+    private TextView totalTextView;
 
     BottomNavigationView bottomNavigationView;
 
-    int budget = 500;
+    int budget ;
 
     String value;
     private ArrayList<String> totalDaysInMonthArray;
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        totalTextView = findViewById(R.id.total_textView);
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         monthYearText = findViewById(R.id.monthYearTV);
         budgetButton = findViewById(R.id.budget_button);
@@ -68,41 +72,40 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     }
 
-    private void monthlySum() {
+    private int calculateMonthlySum(){
         int sum = 0;
         for (int i = 0; i < totalDaysInMonthArray.size(); i++) {
             if (totalDaysInMonthArray.get(i) != null) {
                 sum += Integer.parseInt(totalDaysInMonthArray.get(i));
             }
         }
+        return sum;
+    }
 
+    private void monthlySum() {
 
+        int sum = calculateMonthlySum();
         Intent intent = getIntent();
 
         String userInput = BudgetManager.getBudget();
 
         if (userInput != null) {
-            if(Integer.parseInt(userInput) > budget){
-                Toast.makeText(MainActivity.this, "+" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
-            }else if(Integer.parseInt(userInput) < budget){
-                Toast.makeText(MainActivity.this, "-" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
-            }
+
             budget = Integer.parseInt(userInput);
         }
         budgetButton.setText(Integer.toString(budget));
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         if (budget < sum) {
-            BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.action_month_expenses);
-            badgeDrawable.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
-            badgeDrawable.setVisible(true);
+            totalTextView.setTextColor(Color.RED);
         } else {
-            bottomNavigationView.removeBadge(R.id.action_month_expenses);
+            totalTextView.setTextColor(Color.GREEN);
         }
 
     }
 
     private void setMonthView() {
+
         Intent intent = getIntent();
         String date = intent.getStringExtra("date");
         value = intent.getStringExtra("value");
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+        totalTextView.setText("" + calculateMonthlySum());
         monthlySum();
     }
 

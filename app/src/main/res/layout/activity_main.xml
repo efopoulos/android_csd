@@ -139,20 +139,42 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/budget_button"
-            app:layout_constraintVertical_bias="1.0"
             app:menu="@menu/bottom_nav_menu">
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>
 
         <TextView
-            android:id="@+id/total_budget"
+            android:id="@+id/total_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Total budget: "
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/total_textView_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/total_textView_label"
+            app:layout_constraintTop_toTopOf="@+id/total_textView_label" />
+
+        <TextView
+            android:id="@+id/total_textView_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Total : "
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/total_textView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/budget_textView_label" />
+
+        <TextView
+            android:id="@+id/budget_textView_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="My budget :"
+            android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/budget_button"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -160,12 +182,13 @@
             android:id="@+id/budget_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="164dp"
             android:onClick="ChangeBudgetActivity"
             android:text="Budget button"
+            app:layout_constraintBottom_toBottomOf="@+id/budget_textView_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/budget_textView_label"
+            app:layout_constraintTop_toTopOf="@+id/budget_textView_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

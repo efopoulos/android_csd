@@ -113,8 +113,6 @@ public class CommitmentActivity extends MainActivity {
         final AlertDialog dialog = builder.create();
         dialog.setCancelable(false);
         dialog.show();
-        name.setText("Name");
-        amount.setText("Amount");
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +120,7 @@ public class CommitmentActivity extends MainActivity {
                 String enteredName = name.getText().toString();
                 String enteredAmount = amount.getText().toString();
 
-                if (enteredName.equals("Name") || enteredAmount.equals("Amount")) {
+                if (enteredName.equals("") || enteredAmount.equals("")) {
                     Toast.makeText(CommitmentActivity.this, "Please enter valid values", Toast.LENGTH_SHORT).show();
                 } else {
                     dialogSwitch.setOnClickListener(new View.OnClickListener() {

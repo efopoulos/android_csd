@@ -1,7 +1,7 @@
 package com.example.wallet;
 
 public class BudgetManager {
-    private static String budget = String.valueOf(500);
+    private static String budget ;
 
     public static String getBudget() {
         return budget;
