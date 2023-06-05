@@ -8,4 +8,8 @@
         android:title="Month Expenses"
         android:icon="@drawable/baseline_calendar_month_24"
         android:id="@+id/action_month_expenses"/>
+    <item
+        android:title="Commitments"
+        android:icon="@drawable/baseline_attach_money_24"
+        android:id="@+id/action_commitment"/>
 </menu>

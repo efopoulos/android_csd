@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -106,7 +105,7 @@ public class MonthExpenses  extends MainActivity {
 
 
         });
-        boolean showBadge = getIntent().getBooleanExtra("showBadge", false);
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.action_month_expenses);
@@ -120,18 +119,19 @@ public class MonthExpenses  extends MainActivity {
                         return true;
                     case R.id.action_month_expenses:
                         Intent monthExpensesIntent = new Intent(MonthExpenses.this, MonthExpenses.class);
+                        monthExpensesIntent.putExtra("month", month);
                         startActivity(monthExpensesIntent);
-                        finish();
+                        return true;
+                    case R.id.action_commitment:
+                        Intent commitmentIntent = new Intent(MonthExpenses.this, CommitmentActivity.class);
+                        commitmentIntent.putExtra("month", month);
+                        startActivity(commitmentIntent);
                         return true;
                 }
                 return false;
             }
         });
-        if (showBadge) {
-            BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.action_month_expenses);
-            badgeDrawable.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
-            badgeDrawable.setVisible(true);
-        }
+
 
         }
 

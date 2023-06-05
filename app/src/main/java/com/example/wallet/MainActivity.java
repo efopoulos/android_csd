@@ -53,11 +53,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                     startActivity(mainIntent);
                     return true;
                 case R.id.action_month_expenses:
-
                     Intent monthExpensesIntent = new Intent(MainActivity.this, MonthExpenses.class);
                     monthExpensesIntent.putExtra("month", monthYearFromDate(selectedDate));
-                    monthExpensesIntent.putExtra("showBadge", bottomNavigationView.getBadge(R.id.action_month_expenses) != null);
                     startActivity(monthExpensesIntent);
+                    return true;
+                case R.id.action_commitment:
+                    Intent commitmentIntent = new Intent(MainActivity.this, CommitmentActivity.class);
+                    commitmentIntent.putExtra("month", monthYearFromDate(selectedDate));
+                    startActivity(commitmentIntent);
                     return true;
             }
             return false;
@@ -75,13 +78,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
 
         Intent intent = getIntent();
+
         String userInput = BudgetManager.getBudget();
 
         if (userInput != null) {
             if(Integer.parseInt(userInput) > budget){
-                Toast.makeText(this, "+" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
-            }else if(Integer.parseInt(userInput) > budget){
-                Toast.makeText(this, "-" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "+" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
+            }else if(Integer.parseInt(userInput) < budget){
+                Toast.makeText(MainActivity.this, "-" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
             }
             budget = Integer.parseInt(userInput);
         }
