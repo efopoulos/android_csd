@@ -9,5 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#888</color>
     <color name="blue">#0000FF</color>
-
+    <color name="red">#FF0000</color>
+    <color name="supermarketColor">#FF0000</color> <!-- Αλλάξτε το χρώμα εδώ, ανάλογα με την προτίμησή σας -->
+    <color name="lightGray">#D3D3D3</color>
 </resources>

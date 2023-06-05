@@ -1,16 +1,19 @@
 package com.example.wallet;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -22,7 +25,13 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private RecyclerView calendarRecyclerView;
     //Σημερινή ημερομηνία
     private LocalDate selectedDate;
-    private Button totalMonthExpenses;
+    private Button budgetButton;
+
+    BottomNavigationView bottomNavigationView;
+
+    int budget = 500;
+
+    String value;
     private ArrayList<String> totalDaysInMonthArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +40,31 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         monthYearText = findViewById(R.id.monthYearTV);
-        totalMonthExpenses = findViewById(R.id.month_expenses);
-
+        budgetButton = findViewById(R.id.budget_button);
         selectedDate = LocalDate.now();
-
         setMonthView();
+        monthlySum();
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_main:
+                    Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    return true;
+                case R.id.action_month_expenses:
+                    Intent monthExpensesIntent = new Intent(MainActivity.this, MonthExpenses.class);
+                    monthExpensesIntent.putExtra("month", monthYearFromDate(selectedDate));
+                    startActivity(monthExpensesIntent);
+                    return true;
+                case R.id.action_commitment:
+                    Intent commitmentIntent = new Intent(MainActivity.this, CommitmentActivity.class);
+                    commitmentIntent.putExtra("month", monthYearFromDate(selectedDate));
+                    startActivity(commitmentIntent);
+                    return true;
+            }
+            return false;
+        });
 
     }
 
@@ -46,13 +75,37 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 sum += Integer.parseInt(totalDaysInMonthArray.get(i));
             }
         }
-        totalMonthExpenses.setText(Integer.toString(sum));
+
+
+        Intent intent = getIntent();
+
+        String userInput = BudgetManager.getBudget();
+
+        if (userInput != null) {
+            if(Integer.parseInt(userInput) > budget){
+                Toast.makeText(MainActivity.this, "+" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
+            }else if(Integer.parseInt(userInput) < budget){
+                Toast.makeText(MainActivity.this, "-" + (Integer.parseInt(userInput) - budget), Toast.LENGTH_SHORT).show();
+            }
+            budget = Integer.parseInt(userInput);
+        }
+        budgetButton.setText(Integer.toString(budget));
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        if (budget < sum) {
+            BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.action_month_expenses);
+            badgeDrawable.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+            badgeDrawable.setVisible(true);
+        } else {
+            bottomNavigationView.removeBadge(R.id.action_month_expenses);
+        }
+
     }
 
     private void setMonthView() {
         Intent intent = getIntent();
         String date = intent.getStringExtra("date");
-        String value = intent.getStringExtra("value");
+        value = intent.getStringExtra("value");
         int position = intent.getIntExtra("position", 0);
 
         monthYearText.setText(monthYearFromDate(selectedDate));
@@ -146,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     //με κλικ στο ημερολόγιο -> CalculateActivity
     //υπολογίζει την ημερομηνία που επιλέχθηκε
-    @Override
+    //@Override
     public void onItemClick(int position, String dayText) {
         Intent intent = new Intent(this, CalculateActivity.class);
         String date = dayText + " " + monthYearFromDate(selectedDate);
@@ -155,20 +208,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         startActivity(intent);
     }
     public void MonthExpenses(View view){
-        Log.d("month1", monthYearFromDate(selectedDate));
-
         Intent intent = new Intent(this, MonthExpenses.class);
         intent.putExtra("month", monthYearFromDate(selectedDate));
         startActivity(intent);
     }
 
-
+    public void ChangeBudgetActivity(View view){
+        Intent intent = new Intent(this, ChangeBudgetActivity.class);
+        intent.putExtra("budgetNow", budgetButton.getText().toString());
+        startActivity(intent);
+    }
 }
-
-
-
-
-
-
-
-
