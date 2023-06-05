@@ -135,7 +135,6 @@ public class MonthExpenses extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void setupViewPager() {

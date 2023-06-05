@@ -10,6 +10,7 @@ import static com.example.wallet.DBHandler.TABLE_VALUES;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -37,8 +38,8 @@ public class CalculateActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    TotalExpensesFragment totalExpensesFragment = new TotalExpensesFragment();
     CalculatorDayFragment calculatorDayFragment = new CalculatorDayFragment();
+    TotalExpensesFragment totalExpensesFragment = new TotalExpensesFragment();
 
 
     //============
@@ -46,22 +47,20 @@ public class CalculateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculate);
-
-        dayValue = new DayValue();
-        priceEditText = findViewById(R.id.price_edit_text);
-        dayTextView = findViewById(R.id.day_textView);
-        category_spinner = findViewById(R.id.category_spinner);
+        tabLayout=findViewById(R.id.tablelayout_calculator);
+        viewPager=findViewById(R.id.viewpager_calculator);
 
         Intent intent = getIntent();
 
         day = intent.getStringExtra("buttonText");
         position = intent.getIntExtra("position",0);
-        dayTextView.setText(day);
+        //dayTextView.setText(day);
 //====================================//
-        int monthlySupermarket= 0;
-        int monthlyEntertainment= 0;
-        int monthlyHome= 0;
-        int monthlyTotal= 0;
+
+        int dayTotal = 0;
+        int daySupermarket= 0;
+        int dayEntertainment= 0;
+        int dayHome= 0;
 
         DBHandler dbHelper = new DBHandler(this, null, null, 1);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -80,7 +79,13 @@ public class CalculateActivity extends AppCompatActivity {
                             Integer.parseInt(supermarket),
                             Integer.parseInt(entertainment),
                             Integer.parseInt(home)
+
+
                     );
+                    dayTotal = Integer.parseInt(total);
+                    daySupermarket = Integer.parseInt(supermarket);
+                    dayEntertainment = Integer.parseInt(entertainment);
+                    dayHome = Integer.parseInt(home);
                     break;
                 }
             } while (cursor.moveToNext());
@@ -89,46 +94,46 @@ public class CalculateActivity extends AppCompatActivity {
         }
 
         setupViewPager();
-        //totalExpensesFragment.setData(day, total, monthlySupermarket, monthlyEntertainment, monthlyHome);
         calculatorDayFragment.setData(day);
+        totalExpensesFragment.setData(day, dayTotal, daySupermarket, dayEntertainment, dayHome);
 
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.viewpager_calculator, calculatorDayFragment)
+                            .commit();
+
+                } else if (tab.getPosition() == 1) {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.viewpager_calculator, totalExpensesFragment)
+                            .commit();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+
+
+        });
 
     }
-    public void Calculate(View view) {
-        String total = priceEditText.getText().toString();
-        //κατηγορία που επιλέχθηκε
-        String selectedCategory = category_spinner.getSelectedItem().toString();
 
-        DBHandler dbHandler = new DBHandler(this, null, null, 4);
-
-        if (selectedCategory.equals("Supermarket")) {
-            dayValue.setSupermarket(total);
-        } else if (selectedCategory.equals("Entertainment")) {
-            dayValue.setEntertainment(total);
-        }else{
-            dayValue.setHome(total);
-        }
-        dayValue.setDay(dayTextView.getText().toString());
-        dayValue.setValue(total);
-        dayValue.setCategory(selectedCategory);
-
-        if (!total.equals("") && !dayTextView.getText().equals("")){
-            dbHandler.addNewValue(dayValue);
-        }
-
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("date", dayTextView.getText());
-        intent.putExtra("value", total);
-        intent.putExtra("position" ,position);
-        startActivity(intent);
-    }
 
     private void setupViewPager() {
         tabLayout.setupWithViewPager(viewPager);
         VPAdapter vpAdapter = new VPAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        vpAdapter.addFragment(totalExpensesFragment, "TotalExpenses");
-        vpAdapter.addFragment(calculatorDayFragment, "Statistics");
+        vpAdapter.addFragment(calculatorDayFragment, "Calculator");
+        vpAdapter.addFragment(totalExpensesFragment, "Day Expenses");
         viewPager.setAdapter(vpAdapter);
     }
+
 
 }

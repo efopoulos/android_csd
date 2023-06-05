@@ -1,17 +1,20 @@
 package com.example.wallet;
 
+import static android.icu.text.DateFormat.DAY;
+
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 
 public class CalculatorDayFragment extends Fragment {
 
@@ -28,62 +31,67 @@ public class CalculatorDayFragment extends Fragment {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
 
-        dayValue = new DayValue();
-        priceEditText = findViewById(R.id.price_edit_text);
-        dayTextView = findViewById(R.id.day_textView);
-        category_spinner = findViewById(R.id.category_spinner);
-
-        Intent intent = getIntent();
-
-        day = intent.getStringExtra("buttonText");
-        position = intent.getIntExtra("position",0);
-        dayTextView.setText(day);
+        if (bundle != null) {
+            String dayValue = bundle.getString(DAY);
+            dayTextView.setText(dayValue);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calculator_day, container, false);
+        View view = inflater.inflate(R.layout.fragment_calculator_day, container, false);
+        priceEditText = view.findViewById(R.id.price_edit_text);
+        dayTextView = view.findViewById(R.id.day_textView);
+        category_spinner = view.findViewById(R.id.category_spinner);
+        Button calculateButton = view.findViewById(R.id.calculate_button);
+
+        dayValue = new DayValue();
+
+       dayTextView.setText(day);
+       calculateButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               // Κώδικας που εκτελείται όταν γίνεται κλικ στο κουμπί
+               String total = priceEditText.getText().toString();
+               String selectedCategory = category_spinner.getSelectedItem().toString();
+
+               DBHandler dbHandler = new DBHandler(getContext(), null, null, 4);
+
+               if (selectedCategory.equals("Supermarket")) {
+                   dayValue.setSupermarket(total);
+               } else if (selectedCategory.equals("Entertainment")) {
+                   dayValue.setEntertainment(total);
+               } else {
+                   dayValue.setHome(total);
+               }
+               dayValue.setDay(dayTextView.getText().toString());
+               dayValue.setValue(total);
+               dayValue.setCategory(selectedCategory);
+
+               if (!total.equals("") && !dayTextView.getText().equals("")) {
+                   dbHandler.addNewValue(dayValue);
+               }
+
+               // Μετάβαση στην MainActivity
+               Intent intent = new Intent(getActivity(), MainActivity.class);
+               intent.putExtra("date", dayTextView.getText().toString());
+               intent.putExtra("value", total);
+               intent.putExtra("position", position);
+               startActivity(intent);
+           }
+       });
+       return view;
     }
 
-    public void Calculate(View view) {
-        String total = priceEditText.getText().toString();
-        //κατηγορία που επιλέχθηκε
-        String selectedCategory = category_spinner.getSelectedItem().toString();
-
-        DBHandler dbHandler = new DBHandler(this, null, null, 4);
-
-        if (selectedCategory.equals("Supermarket")) {
-            dayValue.setSupermarket(total);
-        } else if (selectedCategory.equals("Entertainment")) {
-            dayValue.setEntertainment(total);
-        }else{
-            dayValue.setHome(total);
-        }
-        dayValue.setDay(dayTextView.getText().toString());
-        dayValue.setValue(total);
-        dayValue.setCategory(selectedCategory);
-
-        if (!total.equals("") && !dayTextView.getText().equals("")){
-            dbHandler.addNewValue(dayValue);
-        }
-
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("date", dayTextView.getText());
-        intent.putExtra("value", total);
-        intent.putExtra("position" ,position);
-        startActivity(intent);
-    }
 
     public void setData(String day) {
         this.day = day;
-
     }
 
 }
