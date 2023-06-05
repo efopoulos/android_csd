@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -36,9 +37,20 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     String value;
     private ArrayList<String> totalDaysInMonthArray;
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("budget", budget);
+        super.onSaveInstanceState(outState);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Na to doyme
+        if(savedInstanceState != null) {
+            budget = savedInstanceState.getInt("budget");
+        }
         setContentView(R.layout.activity_main);
 
         totalTextView = findViewById(R.id.total_textView);

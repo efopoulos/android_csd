@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -23,7 +24,7 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
-public class MonthExpenses  extends MainActivity {
+public class MonthExpenses extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -135,7 +136,7 @@ public class MonthExpenses  extends MainActivity {
         });
 
 
-        }
+    }
 
     private void setupViewPager() {
         tabLayout.setupWithViewPager(viewPager);
