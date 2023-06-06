@@ -1,6 +1,7 @@
 package com.example.wallet;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,11 +39,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     String value;
     private ArrayList<String> totalDaysInMonthArray;
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt("budget", budget);
-        super.onSaveInstanceState(outState);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         monthYearText = findViewById(R.id.monthYearTV);
         budgetButton = findViewById(R.id.budget_button);
         selectedDate = LocalDate.now();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        budget = sharedPreferences.getInt("budget", 0);
+
         setMonthView();
         monthlySum();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -233,5 +233,16 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         Intent intent = new Intent(this, ChangeBudgetActivity.class);
         intent.putExtra("budgetNow", budgetButton.getText().toString());
         startActivity(intent);
+    }
+    private void saveBudgetValue(int budget) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("budget", budget);
+        editor.apply();
+    }
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveBudgetValue(budget);
     }
 }
