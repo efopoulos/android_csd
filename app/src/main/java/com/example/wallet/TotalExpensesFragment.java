@@ -78,21 +78,37 @@ public class TotalExpensesFragment extends Fragment {
         supermarketTextView.setText(String.valueOf(supermarket));
         ProgressBar progressBarSupermarket = view.findViewById(R.id.progressBarSupermarket);
         int supermarketValue = Integer.parseInt(supermarketTextView.getText().toString());
-        int supermarketPercentage = (supermarketValue * maxProgress) / total;
+        int supermarketPercentage;
+        if (total != 0) {
+            supermarketPercentage = (supermarketValue * maxProgress) / total;
+        } else {
+            supermarketPercentage = 0;
+        }
+
         progressBarSupermarket.setProgress(supermarketPercentage);
         supermarketPercentTextView.setText(String.valueOf(supermarketPercentage) + "%");
 
         entertainmentTextView.setText(String.valueOf(entertainment));
         ProgressBar progressBarEntertainment = view.findViewById(R.id.progressBarEntertainment);
         int entertainmentValue = Integer.parseInt(entertainmentTextView.getText().toString());
-        int entertainmentPercentage = (entertainmentValue * maxProgress) / total;
+        int entertainmentPercentage;
+        if (total != 0) {
+            entertainmentPercentage = (entertainmentValue * maxProgress) / total;
+        } else {
+            entertainmentPercentage = 0;
+        }
         progressBarEntertainment.setProgress(entertainmentPercentage);
         entertainmentPercentTextView.setText(String.valueOf(entertainmentPercentage) + "%");
 
         homeTextView.setText(String.valueOf(home));
         ProgressBar progressBarHome = view.findViewById(R.id.progressBarHome);
         int homeValue = Integer.parseInt(homeTextView.getText().toString());
-        int homePercentage = (homeValue * maxProgress) / total;
+        int homePercentage;
+        if (total != 0) {
+            homePercentage = (homeValue * maxProgress) / total;
+        } else {
+            homePercentage = 0;
+        }
         progressBarHome.setProgress(homePercentage);
         homePercentTextView.setText(String.valueOf(homePercentage) + "%");
 
