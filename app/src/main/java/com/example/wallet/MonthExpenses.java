@@ -36,7 +36,6 @@ public class MonthExpenses extends AppCompatActivity {
     private boolean isViewPagerSetup = false;
     TotalExpensesFragment existingTotalExpensesFragment;
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_month);
@@ -46,6 +45,7 @@ public class MonthExpenses extends AppCompatActivity {
 
         Intent intent = getIntent();
         String month = intent.getStringExtra("month");
+
         int monthlySupermarket= 0;
         int monthlyEntertainment= 0;
         int monthlyHome= 0;
@@ -62,7 +62,6 @@ public class MonthExpenses extends AppCompatActivity {
                 String entertainment = cursor.getString(cursor.getColumnIndex(COLUMN_ENTERTAINMENT));
                 String home = cursor.getString(cursor.getColumnIndex(COLUMN_HOME));
                 String DBDay = days;
-                Log.d("paok", "onCreate: "+ DBDay);
                 String DBDayWithoutFirstCharacter = DBDay.substring(2);
                 //αφαιρούμε τα κενά
                 DBDayWithoutFirstCharacter = DBDayWithoutFirstCharacter.trim();
@@ -79,7 +78,7 @@ public class MonthExpenses extends AppCompatActivity {
         }
 
         setupViewPager();
-        totalExpensesFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome);
+        totalExpensesFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome,false);
         statisticsFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome);
 
 

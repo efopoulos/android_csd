@@ -4,20 +4,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.animation.ObjectAnimator;
 
 import androidx.fragment.app.Fragment;
 
 public class TotalExpensesFragment extends Fragment {
     private TextView monthTextView;
     private TextView totalTextView;
-    private TextView supermarketTextView;
+    private EditText supermarketEditText;
+    private EditText entertainmentEditText;
+    private EditText homeEditText;
+
     private TextView supermarketPercentTextView;
     private TextView entertainmentPercentTextView;
     private TextView homePercentTextView;
+    Boolean flag;
 
+    DayValue dayValue;
 
+    private TextView supermarketTextView;
     private TextView entertainmentTextView;
     private TextView homeTextView;
 
@@ -32,7 +41,9 @@ public class TotalExpensesFragment extends Fragment {
     private static final String SUPERMARKET = "supermarket";
     private static final String ENTERTAINMENT = "entertainment";
     private static final String HOME = "home";
-    private TotalExpensesFragment existingTotalExpensesFragment;
+    private Button processSupermarket;
+    private Button processEntertainment;
+    private Button processHome;
 
 
     public TotalExpensesFragment(){
@@ -55,7 +66,7 @@ public class TotalExpensesFragment extends Fragment {
             entertainmentTextView.setText(String.valueOf(entertainmentValue));
             homeTextView.setText(String.valueOf(homeValue));
         }
-    }
+        }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,17 +74,143 @@ public class TotalExpensesFragment extends Fragment {
 
         monthTextView = view.findViewById(R.id.month_id);
         totalTextView = view.findViewById(R.id.monthtotal_value);
-        supermarketTextView = view.findViewById(R.id.monthsupermarket_value);
+
+        supermarketEditText = view.findViewById(R.id.monthsupermarket_value);
+        entertainmentEditText = view.findViewById(R.id.monthentertainment_value);
+        homeEditText = view.findViewById(R.id.monthhome_value);
+
         supermarketPercentTextView = view.findViewById(R.id.supermarket_percent);
-        entertainmentTextView = view.findViewById(R.id.monthentertainment_value);
         entertainmentPercentTextView = view.findViewById(R.id.entertainment_percent);
-        homeTextView = view.findViewById(R.id.monthhome_value);
         homePercentTextView = view.findViewById(R.id.home_percent);
 
-        int maxProgress = 100;
+        supermarketTextView = view.findViewById(R.id.monthsupermarket_value);
+        entertainmentTextView = view.findViewById(R.id.monthentertainment_value);
+        homeTextView = view.findViewById(R.id.monthhome_value);
+
+        processSupermarket = view.findViewById(R.id.supermarket_process);
+        processEntertainment = view.findViewById(R.id.entertainment_process);
+        processHome = view.findViewById(R.id.home_process);
+
+        //Ελέγχουμε αν το Fragment χρησιμοποιείται για τα έξοδα του μήνα
+        if (flag) {
+            processSupermarket.setVisibility(View.VISIBLE);
+            processEntertainment.setVisibility(View.VISIBLE);
+            processHome.setVisibility(View.VISIBLE);
+            Process(view);
+        } else {
+            processSupermarket.setVisibility(View.GONE);
+            processEntertainment.setVisibility(View.GONE);
+            processHome.setVisibility(View.GONE);
+        }
 
         monthTextView.setText(month);
         totalTextView.setText(String.valueOf(total));
+        SupermarketProcess(view);
+        EntertainmentProcess(view);
+        HomeProcess(view);
+
+        return view;
+    }
+
+
+    public void Process(View view){
+        dayValue = new DayValue();
+        supermarketEditText.setEnabled(false);
+
+        processSupermarket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newTotal = supermarketEditText.getText().toString();
+
+                DBHandler dbHandler = new DBHandler(getContext(), null, null, 4);
+                dayValue.setDay(monthTextView.getText().toString());
+                dayValue.setCategory("Supermarket");
+
+                if (!newTotal.equals(String.valueOf(supermarket))) {
+                    total = total - supermarket + Integer.parseInt(newTotal);
+                    totalTextView.setText(String.valueOf(total));
+                    dayValue.setValue(String.valueOf(total));
+                    supermarket = Integer.parseInt(newTotal);
+                    dayValue.setSupermarket(String.valueOf(supermarket));
+                    dbHandler.updateValue(dayValue);
+                }
+
+                supermarketEditText.setEnabled(!supermarketEditText.isEnabled());
+                if (supermarketEditText.isEnabled()) {
+                    supermarketEditText.requestFocus();
+                }
+                SupermarketProcess(view);
+                EntertainmentProcess(view);
+                HomeProcess(view);
+            }
+        });
+
+        entertainmentEditText.setEnabled(false);
+        processEntertainment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newTotal = entertainmentEditText.getText().toString();
+
+                DBHandler dbHandler = new DBHandler(getContext(), null, null, 4);
+
+                dayValue.setDay(monthTextView.getText().toString());
+                dayValue.setCategory("Entertainment");
+
+                if (!newTotal.equals(String.valueOf(entertainment))) {
+                    total = total - entertainment + Integer.parseInt(newTotal);
+                    totalTextView.setText(String.valueOf(total));
+                    dayValue.setValue(String.valueOf(total));
+                    entertainment = Integer.parseInt(newTotal);
+                    dayValue.setEntertainment(String.valueOf(entertainment));
+                    dbHandler.updateValue(dayValue);
+                }
+
+                entertainmentEditText.setEnabled(!entertainmentEditText.isEnabled());
+                if (entertainmentEditText.isEnabled()) {
+                    entertainmentEditText.requestFocus();
+                }
+                SupermarketProcess(view);
+                EntertainmentProcess(view);
+                HomeProcess(view);
+            }
+        });
+
+        homeEditText.setEnabled(false);
+        processHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newTotal = homeEditText.getText().toString();
+
+                DBHandler dbHandler = new DBHandler(getContext(), null, null, 4);
+
+                dayValue.setDay(monthTextView.getText().toString());
+                //dayValue.setValue(newTotal);
+                dayValue.setCategory("Home");
+
+                if (!newTotal.equals(String.valueOf(home))) {
+                    total = total - home + Integer.parseInt(newTotal);
+                    totalTextView.setText(String.valueOf(total));
+                    dayValue.setValue(String.valueOf(total));
+                    home = Integer.parseInt(newTotal);
+                    dayValue.setHome(String.valueOf(home));
+                    dbHandler.updateValue(dayValue);
+                }
+
+                homeEditText.setEnabled(!homeEditText.isEnabled());
+                if (homeEditText.isEnabled()) {
+                    homeEditText.requestFocus();
+                }
+
+                SupermarketProcess(view);
+                EntertainmentProcess(view);
+                HomeProcess(view);
+            }
+        });
+
+    }
+
+    public void SupermarketProcess(View view){
+        int maxProgress = 100;
 
         supermarketTextView.setText(String.valueOf(supermarket));
         ProgressBar progressBarSupermarket = view.findViewById(R.id.progressBarSupermarket);
@@ -84,9 +221,15 @@ public class TotalExpensesFragment extends Fragment {
         } else {
             supermarketPercentage = 0;
         }
-
         progressBarSupermarket.setProgress(supermarketPercentage);
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBarSupermarket, "progress", 0, supermarketPercentage);
+        animation.setDuration(1000);
+        animation.start();
         supermarketPercentTextView.setText(String.valueOf(supermarketPercentage) + "%");
+    }
+
+    public void EntertainmentProcess(View view){
+        int maxProgress = 100;
 
         entertainmentTextView.setText(String.valueOf(entertainment));
         ProgressBar progressBarEntertainment = view.findViewById(R.id.progressBarEntertainment);
@@ -98,11 +241,19 @@ public class TotalExpensesFragment extends Fragment {
             entertainmentPercentage = 0;
         }
         progressBarEntertainment.setProgress(entertainmentPercentage);
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBarEntertainment, "progress", 0, entertainmentPercentage);
+        animation.setDuration(1000);
+        animation.start();
         entertainmentPercentTextView.setText(String.valueOf(entertainmentPercentage) + "%");
+    }
+
+    public void HomeProcess(View view){
+        int maxProgress = 100;
 
         homeTextView.setText(String.valueOf(home));
         ProgressBar progressBarHome = view.findViewById(R.id.progressBarHome);
         int homeValue = Integer.parseInt(homeTextView.getText().toString());
+
         int homePercentage;
         if (total != 0) {
             homePercentage = (homeValue * maxProgress) / total;
@@ -110,17 +261,18 @@ public class TotalExpensesFragment extends Fragment {
             homePercentage = 0;
         }
         progressBarHome.setProgress(homePercentage);
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBarHome, "progress", 0, homePercentage);
+        animation.setDuration(1000);
+        animation.start();
         homePercentTextView.setText(String.valueOf(homePercentage) + "%");
-
-        return view;
     }
-
-    public void setData(String month, int total, int supermarket, int entertainment, int home) {
+    public void setData(String month, int total, int supermarket, int entertainment, int home, boolean flag) {
         this.month = month;
         this.total = total;
         this.supermarket = supermarket;
         this.entertainment = entertainment;
         this.home = home;
+        this.flag=flag;
     }
 
 }

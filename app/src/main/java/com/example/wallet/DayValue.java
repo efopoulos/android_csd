@@ -28,9 +28,7 @@ public class DayValue {
     public String getDay() { return this.day; }
 
     public void setValue(String value) {  this.value = value; }
-    public String getValue() {
-        return this.value;
-    }
+    public String getValue() { return this.value; }
     public String getSupermarket() {
         return this.supermarket;
     }
@@ -44,5 +42,9 @@ public class DayValue {
     public String getEntertainment() {return this.entertainment;}
     public void setHome(String home) {this.home = home; }
     public String getHome() {return this.home;}
+    public String getTotalValue() {
+        String totalValue = String.valueOf(Integer.parseInt(supermarket) + Integer.parseInt(entertainment)+Integer.parseInt(home));
+        return totalValue;
+    }
 
 }

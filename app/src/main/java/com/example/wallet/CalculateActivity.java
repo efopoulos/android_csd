@@ -12,29 +12,27 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Calendar;
 
 public class CalculateActivity extends AppCompatActivity {
-    //εισαγωγή τιμής
-    EditText priceEditText;
-    //αυτό που δείχνει την μέρα
-    TextView dayTextView;
-    DayValue dayValue;
-    Spinner category_spinner;
     String day;
     private int position;
-    //============
+    BottomNavigationView bottomNavigationView;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -42,7 +40,6 @@ public class CalculateActivity extends AppCompatActivity {
     TotalExpensesFragment totalExpensesFragment = new TotalExpensesFragment();
 
 
-    //============
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +47,14 @@ public class CalculateActivity extends AppCompatActivity {
         tabLayout=findViewById(R.id.tablelayout_calculator);
         viewPager=findViewById(R.id.viewpager_calculator);
 
+
         Intent intent = getIntent();
+        String month = intent.getStringExtra("month");
+        //Log.d("paok123", month);
 
         day = intent.getStringExtra("buttonText");
         position = intent.getIntExtra("position",0);
-        //dayTextView.setText(day);
-//====================================//
+
 
         int dayTotal = 0;
         int daySupermarket= 0;
@@ -78,9 +77,8 @@ public class CalculateActivity extends AppCompatActivity {
                             Integer.parseInt(total),
                             Integer.parseInt(supermarket),
                             Integer.parseInt(entertainment),
-                            Integer.parseInt(home)
-
-
+                            Integer.parseInt(home),
+                            true
                     );
                     dayTotal = Integer.parseInt(total);
                     daySupermarket = Integer.parseInt(supermarket);
@@ -95,7 +93,7 @@ public class CalculateActivity extends AppCompatActivity {
 
         setupViewPager();
         calculatorDayFragment.setData(day);
-        totalExpensesFragment.setData(day, dayTotal, daySupermarket, dayEntertainment, dayHome);
+        totalExpensesFragment.setData(day, dayTotal, daySupermarket, dayEntertainment, dayHome, true);
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -122,6 +120,32 @@ public class CalculateActivity extends AppCompatActivity {
             }
 
 
+        });
+
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.action_main);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_main:
+                        Intent mainIntent = new Intent(CalculateActivity.this, MainActivity.class);
+                        startActivity(mainIntent);
+                        return true;
+                    case R.id.action_month_expenses:
+                        Intent monthExpensesIntent = new Intent(CalculateActivity.this, MonthExpenses.class);
+                        monthExpensesIntent.putExtra("month", month);
+                        startActivity(monthExpensesIntent);
+                        return true;
+                    case R.id.action_commitment:
+                        Intent commitmentIntent = new Intent(CalculateActivity.this, CommitmentActivity.class);
+                        commitmentIntent.putExtra("month", month);
+                        startActivity(commitmentIntent);
+                        return true;
+                }
+                return false;
+            }
         });
 
     }

@@ -3,6 +3,7 @@ package com.example.wallet;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,6 @@ public class StatisticsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
 
-
         if (bundle != null) {
             month = bundle.getString(MONTH);
             total = bundle.getInt(TOTAL);
@@ -78,7 +78,6 @@ public class StatisticsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_statistics, container, false);
         pieChart = view.findViewById(R.id.pie_chart);
         barChart = view.findViewById(R.id.barChart);
-
 
         ArrayList<BarEntry> expenses = new ArrayList<>();
         ArrayList<String> days = new ArrayList<>();
@@ -168,8 +167,6 @@ public class StatisticsFragment extends Fragment {
         barChart.setPinchZoom(true);
         barChart.setDoubleTapToZoomEnabled(false);
         barChart.setDragEnabled(true);
-
-
 
         pieChart.animateXY(1000, 1000);
         ArrayList<PieEntry> entries1 = new ArrayList<>();

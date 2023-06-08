@@ -18,6 +18,7 @@ public class DBHandler extends SQLiteOpenHelper{
     public static final String COLUMN_ENTERTAINMENT = "entertainment";
     public static final String COLUMN_HOME = "home";
 
+    String totalValue = String.valueOf(0);
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
@@ -43,6 +44,7 @@ public class DBHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VALUES);
         onCreate(db);
     }
+
     public void addNewValue(DayValue dayValue) {
         String dayName = dayValue.getDay();
         String newValue = dayValue.getValue();
@@ -85,6 +87,44 @@ public class DBHandler extends SQLiteOpenHelper{
         }
         //διαγράφει οτι εχει μεσα ο πινακας
         //db.delete(TABLE_VALUES, null, null);
+    }
+
+
+    public void updateValue(DayValue dayValue) {
+        //παιρνουμε την μέρα που αποθηκευτηκε στο αντικειμενο
+        String dayName = dayValue.getDay();
+        //το νέο υπόλοιπο
+        String newValue = dayValue.getValue();
+        //την κατηγορία
+        String category = dayValue.getCategory();
+        //ελέγχουμε αν η υπάρχει η μέρα στην βάση
+        DayValue found = findDay(dayName);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        //αν υπάρχει
+        if(found!=null){
+            String query;
+            //ορίζουμε νέα τιμή value
+            query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_VALUE + " = '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            db.execSQL(query);
+
+            //αντικαθιστούμε την παλιά τιμή
+            if (category.equals("Supermarket")) {
+                String newSupermarket = dayValue.getSupermarket();
+                query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_SUPERMARKET + " = '" + newSupermarket + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            } else if (category.equals("Entertainment")) {
+                String newEntertainment = dayValue.getEntertainment();
+                query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_ENTERTAINMENT + " = '" + newEntertainment + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            }else{
+                String newHome = dayValue.getHome();
+                query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_HOME + " = '" + newHome + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            }
+            db.execSQL(query);
+        //αλλιώς καλλούμε την συνάρτηση για εισαγωγή εκ νέου
+        }else{
+            addNewValue(dayValue);
+        }
+
     }
 
     public DayValue findDay(String day_name) {

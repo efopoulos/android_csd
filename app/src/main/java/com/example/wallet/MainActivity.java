@@ -221,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         String date = dayText + " " + monthYearFromDate(selectedDate);
         intent.putExtra("buttonText", date);
         intent.putExtra("position", position);
+        intent.putExtra("month", monthYearFromDate(selectedDate));
         startActivity(intent);
     }
     public void MonthExpenses(View view){
