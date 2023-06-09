@@ -133,6 +133,11 @@ public class StatisticsFragment extends Fragment {
         };
         Collections.sort(days, dateComparator);
 
+        //Σχεδιασμός του γραφήματος με μπάρες\
+        //Ενεργοποίηση εξόνων
+        //Ορισμός ετικετών με βάση τη λίστα days
+        //ορισμός μεγεθών και δεδομένων
+        //προσθέτει κίνηση
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
@@ -161,7 +166,6 @@ public class StatisticsFragment extends Fragment {
         barChart.setFitBars(true);
         barChart.invalidate();
         barChart.animateY(1000);
-
 
         barChart.setScaleEnabled(true);
         barChart.setPinchZoom(true);

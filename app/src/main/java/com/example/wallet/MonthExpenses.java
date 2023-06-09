@@ -32,9 +32,6 @@ public class MonthExpenses extends AppCompatActivity {
     TotalExpensesFragment totalExpensesFragment = new TotalExpensesFragment();
     StatisticsFragment statisticsFragment = new StatisticsFragment();
 
-    private BudgetManager budgetManager = new BudgetManager();
-    private boolean isViewPagerSetup = false;
-    TotalExpensesFragment existingTotalExpensesFragment;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

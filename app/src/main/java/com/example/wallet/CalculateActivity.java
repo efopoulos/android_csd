@@ -50,18 +50,10 @@ public class CalculateActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String month = intent.getStringExtra("month");
-        //Log.d("paok123", month);
-
         day = intent.getStringExtra("buttonText");
         position = intent.getIntExtra("position",0);
 
-
-        int dayTotal = 0;
-        int daySupermarket= 0;
-        int dayEntertainment= 0;
-        int dayHome= 0;
-
-        DBHandler dbHelper = new DBHandler(this, null, null, 1);
+        DBHandler dbHelper = new DBHandler(this, null, null, 4);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_VALUES, null);
 
@@ -80,10 +72,6 @@ public class CalculateActivity extends AppCompatActivity {
                             Integer.parseInt(home),
                             true
                     );
-                    dayTotal = Integer.parseInt(total);
-                    daySupermarket = Integer.parseInt(supermarket);
-                    dayEntertainment = Integer.parseInt(entertainment);
-                    dayHome = Integer.parseInt(home);
                     break;
                 }
             } while (cursor.moveToNext());
@@ -93,10 +81,11 @@ public class CalculateActivity extends AppCompatActivity {
 
         setupViewPager();
         calculatorDayFragment.setData(day);
-        totalExpensesFragment.setData(day, dayTotal, daySupermarket, dayEntertainment, dayHome, true);
 
-
+        //Ελεγχος και συνονισμός των καρτελών
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            //αν η καρτέλα βρίσκεται στη θέση 0 τότε εισάγεται το calculatorDayFragment
+            //αν βρίσεκται στη θέση 1 τότε εισάγεται το totalFragment
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
@@ -119,10 +108,10 @@ public class CalculateActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
 
-
         });
 
 
+        //Κώδικας για την δημιουργία του BottomNavigationBar
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.action_main);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

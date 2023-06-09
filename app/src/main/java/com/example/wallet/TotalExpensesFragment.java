@@ -91,7 +91,7 @@ public class TotalExpensesFragment extends Fragment {
         processEntertainment = view.findViewById(R.id.entertainment_process);
         processHome = view.findViewById(R.id.home_process);
 
-        //Ελέγχουμε αν το Fragment χρησιμοποιείται για τα έξοδα του μήνα
+        //Ελέγχουμε αν το Fragment χρησιμοποιείται για τα έξοδα του μήνα ή για τα έξοδα της ημέρας
         if (flag) {
             processSupermarket.setVisibility(View.VISIBLE);
             processEntertainment.setVisibility(View.VISIBLE);
@@ -105,6 +105,13 @@ public class TotalExpensesFragment extends Fragment {
 
         monthTextView.setText(month);
         totalTextView.setText(String.valueOf(total));
+
+        //Καθιστούμε τα EditText UnEdible για τα συνολικά έξοδα του μήνα
+        supermarketEditText.setEnabled(false);
+        entertainmentEditText.setEnabled(false);
+        homeEditText.setEnabled(false);
+
+        //υπολογισμός ποσοστού και δημιουργία processBar
         SupermarketProcess(view);
         EntertainmentProcess(view);
         HomeProcess(view);
@@ -114,36 +121,50 @@ public class TotalExpensesFragment extends Fragment {
 
 
     public void Process(View view){
+        //Δημιουργία νέου αντικειμένου DayValue
         dayValue = new DayValue();
         supermarketEditText.setEnabled(false);
 
         processSupermarket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Εισαγωγή νεας τιμής από τον χρήστη
                 String newTotal = supermarketEditText.getText().toString();
 
                 DBHandler dbHandler = new DBHandler(getContext(), null, null, 4);
+                //Ορίζουμε την τρέχουσα ημερομηνία στο DayValue, και την κατηγορία που μας ενδιαφέρει
                 dayValue.setDay(monthTextView.getText().toString());
                 dayValue.setCategory("Supermarket");
 
+                //Αν η νέα τιμή διαφέρει από την παλια τότε
                 if (!newTotal.equals(String.valueOf(supermarket))) {
+                    //το νεο συνολικό ποσό ειναι η αφαίρεση της προηγούμενης τιμής από το αρχικό ποσο
+                    //και το άρθροισμα της νέας τιμής
                     total = total - supermarket + Integer.parseInt(newTotal);
                     totalTextView.setText(String.valueOf(total));
+                    //ορίζουμε το νέο συνολικο ποσο που υπολογίσαμε παραπάνω
                     dayValue.setValue(String.valueOf(total));
+                    //η παλιά τιμή αντικαθιστάται με την καινούργια
                     supermarket = Integer.parseInt(newTotal);
                     dayValue.setSupermarket(String.valueOf(supermarket));
+                    //στέλνουμε το αντικείμενο dayValue με όλα τα στοιχεία που μας ενδιαφέρουν στην
+                    // κλάση της βάσης για ανανέωση της βάσης
                     dbHandler.updateValue(dayValue);
                 }
 
+                //έλεγχος της ενεργοποίηση ή απενεργοποίηση ενός πεδίου κειμένου
                 supermarketEditText.setEnabled(!supermarketEditText.isEnabled());
                 if (supermarketEditText.isEnabled()) {
                     supermarketEditText.requestFocus();
                 }
+                //επαναδημιουργούμε τα processBars με τα νέα δεδομένα
                 SupermarketProcess(view);
                 EntertainmentProcess(view);
                 HomeProcess(view);
             }
         });
+
+        //Η ίδια διαδικασία επαναλλαμβάνεται και για τις άλλες δύο κατηγορίες
 
         entertainmentEditText.setEnabled(false);
         processEntertainment.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +205,6 @@ public class TotalExpensesFragment extends Fragment {
                 DBHandler dbHandler = new DBHandler(getContext(), null, null, 4);
 
                 dayValue.setDay(monthTextView.getText().toString());
-                //dayValue.setValue(newTotal);
                 dayValue.setCategory("Home");
 
                 if (!newTotal.equals(String.valueOf(home))) {
@@ -209,11 +229,13 @@ public class TotalExpensesFragment extends Fragment {
 
     }
 
+    //Κλάση που δημιουργεί και εμφανίζει το porcessBar του Supermarket
     public void SupermarketProcess(View view){
         int maxProgress = 100;
 
         supermarketTextView.setText(String.valueOf(supermarket));
         ProgressBar progressBarSupermarket = view.findViewById(R.id.progressBarSupermarket);
+
         int supermarketValue = Integer.parseInt(supermarketTextView.getText().toString());
         int supermarketPercentage;
         if (total != 0) {
@@ -222,10 +244,13 @@ public class TotalExpensesFragment extends Fragment {
             supermarketPercentage = 0;
         }
         progressBarSupermarket.setProgress(supermarketPercentage);
+
+        //Προσθέτει την κίνηση στην μπάρα κατα την δημιουργία της
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBarSupermarket, "progress", 0, supermarketPercentage);
         animation.setDuration(1000);
         animation.start();
-        supermarketPercentTextView.setText(String.valueOf(supermarketPercentage) + "%");
+
+        supermarketPercentTextView.setText(supermarketPercentage + "%");
     }
 
     public void EntertainmentProcess(View view){
@@ -244,7 +269,7 @@ public class TotalExpensesFragment extends Fragment {
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBarEntertainment, "progress", 0, entertainmentPercentage);
         animation.setDuration(1000);
         animation.start();
-        entertainmentPercentTextView.setText(String.valueOf(entertainmentPercentage) + "%");
+        entertainmentPercentTextView.setText(entertainmentPercentage + "%");
     }
 
     public void HomeProcess(View view){
@@ -264,8 +289,9 @@ public class TotalExpensesFragment extends Fragment {
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBarHome, "progress", 0, homePercentage);
         animation.setDuration(1000);
         animation.start();
-        homePercentTextView.setText(String.valueOf(homePercentage) + "%");
+        homePercentTextView.setText(homePercentage + "%");
     }
+
     public void setData(String month, int total, int supermarket, int entertainment, int home, boolean flag) {
         this.month = month;
         this.total = total;

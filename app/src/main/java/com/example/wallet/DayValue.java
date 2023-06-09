@@ -1,6 +1,6 @@
 package com.example.wallet;
 
-//Κλαση για προσωρινη φυλλαξη ζευγους μέρας-τιμής
+//Κλαση για προσωρινη φυλλαξη ζευγους μέρας-τιμών
 public class DayValue {
     private String value;
     private String day;
