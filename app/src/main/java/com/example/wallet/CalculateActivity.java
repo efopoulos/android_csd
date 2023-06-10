@@ -10,14 +10,9 @@ import static com.example.wallet.DBHandler.TABLE_VALUES;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +21,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.Calendar;
 
 public class CalculateActivity extends AppCompatActivity {
     String day;
@@ -57,6 +50,8 @@ public class CalculateActivity extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_VALUES, null);
 
+        //ελέγχουμε σν η μέρα υπάρχει στον πίνακα
+        Boolean dayFoundFlag = false;
         if (cursor.moveToFirst()) {
             do {
                 String days = cursor.getString(cursor.getColumnIndex(COLUMN_DAYS));
@@ -72,6 +67,7 @@ public class CalculateActivity extends AppCompatActivity {
                             Integer.parseInt(home),
                             true
                     );
+                    dayFoundFlag = true;
                     break;
                 }
             } while (cursor.moveToNext());
@@ -81,6 +77,9 @@ public class CalculateActivity extends AppCompatActivity {
 
         setupViewPager();
         calculatorDayFragment.setData(day);
+        if(!dayFoundFlag){
+            totalExpensesFragment.setData(day, 0, 0, 0, 0, true);
+        }
 
         //Ελεγχος και συνονισμός των καρτελών
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

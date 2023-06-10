@@ -22,7 +22,10 @@
         android:layout_width="414dp"
         android:layout_height="692dp"
         android:scrollbars="none"
-        tools:layout_editor_absoluteX="-3dp">
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </ScrollView>
 
