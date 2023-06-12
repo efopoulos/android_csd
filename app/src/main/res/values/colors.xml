@@ -12,4 +12,23 @@
     <color name="red">#FF0000</color>
     <color name="supermarketColor">#FF0000</color> <!-- Αλλάξτε το χρώμα εδώ, ανάλογα με την προτίμησή σας -->
     <color name="lightGray">#D3D3D3</color>
+    <color name="colorPrimary">#d81b60</color>
+    <color name="colorPrimaryDark">#a00037</color>
+    <color name="colorPrimaryLight">#ff5c8d</color>
+    <color name="colorAccent">#1e88e5</color>
+    <color name="colorAccentLight">#6ab7ff</color>
+    <color name="colorOnPrimary">@color/white</color>
+    <color name="colorRipple">#33FFFFFF</color>
+
+    <color name="gray_700">#666161</color>
+    <color name="gray_200">#f3eded</color>
+    <color name="gray_500">#a49e9e</color>
+    <color name="gray_900">#252121</color>
+    <color name="gray_100">#faf4f4</color>
+
+    <color name="gray_complementary_900">#212525</color>
+    <color name="gray_complementary_700">#616666</color>
+    <color name="gray_complementary_500">#9ea4a4</color>
+    <color name="gray_complementary_200">#ecf2f2</color>
+    <color name="gray_complementary_100">#f1f7f7</color>
 </resources>
