@@ -26,9 +26,9 @@
     <color name="gray_900">#252121</color>
     <color name="gray_100">#faf4f4</color>
 
-    <color name="gray_complementary_900">#212525</color>
-    <color name="gray_complementary_700">#616666</color>
-    <color name="gray_complementary_500">#9ea4a4</color>
-    <color name="gray_complementary_200">#ecf2f2</color>
-    <color name="gray_complementary_100">#f1f7f7</color>
+    <color name="green_complementary_900">#33691E</color>
+    <color name="green_complementary_700">#689F38</color>
+    <color name="green_complementary_500">#8BC34A</color>
+    <color name="green_complementary_200">#ecf2f2</color>
+    <color name="green_complementary_100">#DCEDC8</color>
 </resources>

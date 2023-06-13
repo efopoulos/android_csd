@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -169,7 +170,34 @@ public class CommitmentActivity extends MainActivity {
                 removeCardFromSharedPreferences(name, amount);
             }
         });
+
+        //σε περίπτωση αλλαγής του switch Καλείται η κλάση updateSwitch
+        cardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateSwitchState(name, amount, isChecked);
+            }
+        });
+
         layout.addView(view);
+    }
+
+    private void updateSwitchState(String name, String amount, boolean switchState) {
+        for (int i = 0; i < savedCards.size(); i++) {
+            String card = savedCards.get(i);
+            String[] cardData = card.split(",");
+            String cardName = cardData[0];
+            String cardAmount = cardData[1];
+
+            if (cardName.equals(name) && cardAmount.equals(amount)) {
+                //Ενημέρωση της τιμής του switch για το συγκεκριμένο αντικείμενο
+                String switchToString = String.valueOf(switchState);
+                String updatedCardData = cardName + "," + cardAmount + "," + switchToString;
+                savedCards.set(i, updatedCardData);
+                saveCardsToSharedPreferences();
+                break;
+            }
+        }
     }
 
     //αφαίρεση μιας καρτέλας από το SharedPreferences

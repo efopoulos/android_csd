@@ -10,9 +10,9 @@
                     <corners android:radius="8dp"/>
                     <gradient
                         android:angle="90"
-                        android:endColor="@color/gray_complementary_200"
-                        android:centerColor="@color/gray_complementary_500"
-                        android:startColor="@color/gray_complementary_500" />
+                        android:endColor="@color/green_complementary_200"
+                        android:centerColor="@color/green_complementary_500"
+                        android:startColor="@color/green_complementary_500" />
                 </shape>
             </item>
             <item>
@@ -20,9 +20,9 @@
                     <corners android:radius="8dp"/>
                     <gradient
                         android:angle="270"
-                        android:endColor="@color/gray_complementary_200"
-                        android:centerColor="@color/gray_complementary_500"
-                        android:startColor="@color/gray_complementary_500" />
+                        android:endColor="@color/green_complementary_200"
+                        android:centerColor="@color/green_complementary_500"
+                        android:startColor="@color/green_complementary_500" />
                 </shape>
             </item>
         </selector>
