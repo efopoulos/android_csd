@@ -39,6 +39,7 @@ public class CalculateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calculate);
         tabLayout=findViewById(R.id.tablelayout_calculator);
         viewPager=findViewById(R.id.viewpager_calculator);
+        getSupportActionBar().hide();
 
 
         Intent intent = getIntent();

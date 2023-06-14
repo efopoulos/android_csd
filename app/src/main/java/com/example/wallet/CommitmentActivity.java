@@ -35,6 +35,7 @@ public class CommitmentActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commitment);
+        getSupportActionBar().hide();
 
         layout = findViewById(R.id.container);
         sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);

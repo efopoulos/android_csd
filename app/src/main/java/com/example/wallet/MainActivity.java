@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             budget = savedInstanceState.getInt("budget");
         }
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
 
         totalTextView = findViewById(R.id.total_textView);
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView);

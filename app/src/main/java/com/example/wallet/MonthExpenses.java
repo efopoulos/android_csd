@@ -36,6 +36,7 @@ public class MonthExpenses extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_month);
+        getSupportActionBar().hide();
 
         tabLayout=findViewById(R.id.tablelayout);
         viewPager=findViewById(R.id.viewpager);
