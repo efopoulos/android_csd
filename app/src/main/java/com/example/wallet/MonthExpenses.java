@@ -3,7 +3,9 @@ package com.example.wallet;
 import static com.example.wallet.DBHandler.COLUMN_DAYS;
 import static com.example.wallet.DBHandler.COLUMN_ENTERTAINMENT;
 import static com.example.wallet.DBHandler.COLUMN_HOME;
+import static com.example.wallet.DBHandler.COLUMN_OTHER;
 import static com.example.wallet.DBHandler.COLUMN_SUPERMARKET;
+import static com.example.wallet.DBHandler.COLUMN_TRANSPORTATION;
 import static com.example.wallet.DBHandler.COLUMN_VALUE;
 import static com.example.wallet.DBHandler.TABLE_VALUES;
 
@@ -48,8 +50,10 @@ public class MonthExpenses extends AppCompatActivity {
         int monthlyEntertainment= 0;
         int monthlyHome= 0;
         int monthlyTotal= 0;
+        int monthlyTransportation = 0;
+        int monthlyOther = 0;
         String MainMonth = month;
-        DBHandler dbHelper = new DBHandler(this, null, null, 1);
+        DBHandler dbHelper = new DBHandler(this, null, null, 5);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_VALUES, null);
         if (cursor.moveToFirst()) {
@@ -59,6 +63,9 @@ public class MonthExpenses extends AppCompatActivity {
                 String supermarket = cursor.getString(cursor.getColumnIndex(COLUMN_SUPERMARKET));
                 String entertainment = cursor.getString(cursor.getColumnIndex(COLUMN_ENTERTAINMENT));
                 String home = cursor.getString(cursor.getColumnIndex(COLUMN_HOME));
+                String transportation = cursor.getString(cursor.getColumnIndex(COLUMN_TRANSPORTATION));
+                String other = cursor.getString(cursor.getColumnIndex(COLUMN_OTHER));
+
                 String DBDay = days;
                 String DBDayWithoutFirstCharacter = DBDay.substring(2);
                 //αφαιρούμε τα κενά
@@ -68,6 +75,8 @@ public class MonthExpenses extends AppCompatActivity {
                     monthlySupermarket = monthlySupermarket + Integer.parseInt(supermarket);
                     monthlyEntertainment = monthlyEntertainment + Integer.parseInt(entertainment);
                     monthlyHome = monthlyHome + Integer.parseInt(home);
+                    monthlyTransportation = monthlyTransportation + Integer.parseInt(transportation);
+                    monthlyOther = monthlyOther + Integer.parseInt(other);
                     monthlyTotal = monthlyTotal + Integer.parseInt(value);
                 }
             } while (cursor.moveToNext());
@@ -76,8 +85,8 @@ public class MonthExpenses extends AppCompatActivity {
         }
 
         setupViewPager();
-        totalExpensesFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome,false);
-        statisticsFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome);
+        totalExpensesFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome, monthlyTransportation, monthlyOther, false);
+        statisticsFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome, monthlyTransportation, monthlyOther);
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

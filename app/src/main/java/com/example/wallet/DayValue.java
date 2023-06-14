@@ -8,6 +8,8 @@ public class DayValue {
     private String entertainment;
     private String home;
     private String category;
+    private String transportation;
+    private String other;
 
 
 
@@ -42,6 +44,10 @@ public class DayValue {
     public String getEntertainment() {return this.entertainment;}
     public void setHome(String home) {this.home = home; }
     public String getHome() {return this.home;}
+    public void setOther(String other) {this.other = other; }
+    public String getOther() {return this.transportation;}
+    public void setTransportation(String other) {this.other = other; }
+    public String getTransportation() {return this.transportation;}
     public String getTotalValue() {
         String totalValue = String.valueOf(Integer.parseInt(supermarket) + Integer.parseInt(entertainment)+Integer.parseInt(home));
         return totalValue;

@@ -2,6 +2,7 @@ package com.example.wallet;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,11 +37,15 @@ public class StatisticsFragment extends Fragment {
     private int supermarket;
     private int entertainment;
     private int home;
+    private int transportation;
+    private int other;
     private static final String MONTH = "month";
     private static final String TOTAL = "total";
     private static final String SUPERMARKET = "supermarket";
     private static final String ENTERTAINMENT = "entertainment";
     private static final String HOME = "home";
+    private static final String TRANSPORTATION = "transportation";
+    private static final String OTHER = "other";
     BudgetManager budget;
 
     PieChart pieChart;
@@ -60,16 +65,20 @@ public class StatisticsFragment extends Fragment {
             supermarket = bundle.getInt(SUPERMARKET);
             entertainment = bundle.getInt(ENTERTAINMENT);
             home = bundle.getInt(HOME);
+            transportation = bundle.getInt(TRANSPORTATION);
+            other = bundle.getInt(OTHER);
         }
 
     }
 
-    public void setData(String month, int total, int supermarket, int entertainment, int home) {
+    public void setData(String month, int total, int supermarket, int entertainment, int home, int transportation, int other) {
         this.month = month;
         this.total = total;
         this.supermarket = supermarket;
         this.entertainment = entertainment;
         this.home = home;
+        this.transportation = transportation;
+        this.other = other;
     }
 
     @Override
@@ -84,7 +93,7 @@ public class StatisticsFragment extends Fragment {
         ArrayList<Integer> totals = new ArrayList<>();
         String MainMonth = month;
 
-        DBHandler dbHandler = new DBHandler(getActivity(), null, null, 1);
+        DBHandler dbHandler = new DBHandler(getActivity(), null, null, 5);
         SQLiteDatabase db = dbHandler.getReadableDatabase();
 
         String query = "SELECT " + DBHandler.COLUMN_DAYS + ", " + DBHandler.COLUMN_VALUE +
@@ -172,14 +181,18 @@ public class StatisticsFragment extends Fragment {
         barChart.setDoubleTapToZoomEnabled(false);
         barChart.setDragEnabled(true);
 
+
         pieChart.animateXY(1000, 1000);
         ArrayList<PieEntry> entries1 = new ArrayList<>();
         entries1.add(new PieEntry(supermarket, "Supermarket"));
         entries1.add(new PieEntry(entertainment, "Entertainment"));
         entries1.add(new PieEntry(home, "Home"));
+        entries1.add(new PieEntry(transportation, "Transportation"));
+        entries1.add(new PieEntry(other, "Other"));
         PieDataSet dataSet = new PieDataSet(entries1, "Expenses");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData pieData = new PieData(dataSet);
+
         pieChart.setData(pieData);
         pieChart.invalidate();
         return view;
