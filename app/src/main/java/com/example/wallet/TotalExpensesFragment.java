@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.animation.ObjectAnimator;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 public class TotalExpensesFragment extends Fragment {
@@ -82,9 +83,18 @@ public class TotalExpensesFragment extends Fragment {
         }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean("flag", flag);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_total_expenses, container, false);
 
+        if(savedInstanceState != null){
+            flag = savedInstanceState.getBoolean("flag");
+        }
         monthTextView = view.findViewById(R.id.month_id);
         totalTextView = view.findViewById(R.id.monthtotal_value);
 
@@ -131,7 +141,7 @@ public class TotalExpensesFragment extends Fragment {
         monthTextView.setText(month);
         totalTextView.setText(String.valueOf(total));
 
-        //Καθιστούμε τα EditText UnEdible για τα συνολικά έξοδα του μήνα
+        //Καθιστούμε τα EditText Disabled για τα συνολικά έξοδα του μήνα
         supermarketEditText.setEnabled(false);
         entertainmentEditText.setEnabled(false);
         homeEditText.setEnabled(false);

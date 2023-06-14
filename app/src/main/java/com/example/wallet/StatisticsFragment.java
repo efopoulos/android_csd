@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -50,6 +51,11 @@ public class StatisticsFragment extends Fragment {
 
     PieChart pieChart;
     BarChart barChart;
+    private String MainMonth;
+    private String DBDayWithoutFirstCharacter;
+
+    String saveDay;
+    String saveMonth;
 
     public StatisticsFragment() {
     }
@@ -68,7 +74,12 @@ public class StatisticsFragment extends Fragment {
             transportation = bundle.getInt(TRANSPORTATION);
             other = bundle.getInt(OTHER);
         }
-
+        if(savedInstanceState != null){
+            saveDay = savedInstanceState.getString("saveDay");
+            saveMonth = savedInstanceState.getString("saveMonth");
+            Log.d("paok", "onCreate: DAY: "+ saveDay);
+            Log.d("paok", "onCreate: MONTH: "+ saveMonth);
+        }
     }
 
     public void setData(String month, int total, int supermarket, int entertainment, int home, int transportation, int other) {
@@ -82,16 +93,27 @@ public class StatisticsFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        Log.d("paok", "onSaveInstanceState: DAY: " + DBDayWithoutFirstCharacter);
+        Log.d("paok", "onSaveInstanceState: MONTH: " + MainMonth);
+        outState.putString("saveDay", DBDayWithoutFirstCharacter);
+        outState.putString("saveMonth", MainMonth);
+        super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_statistics, container, false);
+
         pieChart = view.findViewById(R.id.pie_chart);
         barChart = view.findViewById(R.id.barChart);
 
         ArrayList<BarEntry> expenses = new ArrayList<>();
         ArrayList<String> days = new ArrayList<>();
         ArrayList<Integer> totals = new ArrayList<>();
-        String MainMonth = month;
+        MainMonth = month;
 
         DBHandler dbHandler = new DBHandler(getActivity(), null, null, 5);
         SQLiteDatabase db = dbHandler.getReadableDatabase();
@@ -105,10 +127,20 @@ public class StatisticsFragment extends Fragment {
                 String day = cursor.getString(0);
                 int total = cursor.getInt(1);
                 String DBDay = String.valueOf(day);
-                String DBDayWithoutFirstCharacter = DBDay.substring(2);
+                DBDayWithoutFirstCharacter = DBDay.substring(2);
+
+                if(DBDayWithoutFirstCharacter == null){
+                    DBDayWithoutFirstCharacter = saveDay;
+                }
+
+                if(MainMonth == null){
+                    MainMonth = saveMonth;
+                }
 
                 DBDayWithoutFirstCharacter = DBDayWithoutFirstCharacter.trim();
+
                 MainMonth = MainMonth.trim();
+
                 if (DBDayWithoutFirstCharacter.equals(MainMonth)) {
                     days.add(day);
                     totals.add(total);
