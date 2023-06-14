@@ -3,7 +3,9 @@ package com.example.wallet;
 import static com.example.wallet.DBHandler.COLUMN_DAYS;
 import static com.example.wallet.DBHandler.COLUMN_ENTERTAINMENT;
 import static com.example.wallet.DBHandler.COLUMN_HOME;
+import static com.example.wallet.DBHandler.COLUMN_OTHER;
 import static com.example.wallet.DBHandler.COLUMN_SUPERMARKET;
+import static com.example.wallet.DBHandler.COLUMN_TRANSPORTATION;
 import static com.example.wallet.DBHandler.COLUMN_VALUE;
 import static com.example.wallet.DBHandler.TABLE_VALUES;
 
@@ -40,13 +42,12 @@ public class CalculateActivity extends AppCompatActivity {
         tabLayout=findViewById(R.id.tablelayout_calculator);
         viewPager=findViewById(R.id.viewpager_calculator);
 
-
         Intent intent = getIntent();
         String month = intent.getStringExtra("month");
         day = intent.getStringExtra("buttonText");
         position = intent.getIntExtra("position",0);
 
-        DBHandler dbHelper = new DBHandler(this, null, null, 4);
+        DBHandler dbHelper = new DBHandler(this, null, null, 5);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_VALUES, null);
 
@@ -59,12 +60,16 @@ public class CalculateActivity extends AppCompatActivity {
                 String supermarket = cursor.getString(cursor.getColumnIndex(COLUMN_SUPERMARKET));
                 String entertainment = cursor.getString(cursor.getColumnIndex(COLUMN_ENTERTAINMENT));
                 String home = cursor.getString(cursor.getColumnIndex(COLUMN_HOME));
+                String transportation = cursor.getString(cursor.getColumnIndex(COLUMN_TRANSPORTATION));
+                String other = cursor.getString(cursor.getColumnIndex(COLUMN_OTHER));
                 if(days.equals(day)) {
                     totalExpensesFragment.setData(days,
                             Integer.parseInt(total),
                             Integer.parseInt(supermarket),
                             Integer.parseInt(entertainment),
                             Integer.parseInt(home),
+                            Integer.parseInt(transportation),
+                            Integer.parseInt(other),
                             true
                     );
                     dayFoundFlag = true;
@@ -78,7 +83,7 @@ public class CalculateActivity extends AppCompatActivity {
         setupViewPager();
         calculatorDayFragment.setData(day);
         if(!dayFoundFlag){
-            totalExpensesFragment.setData(day, 0, 0, 0, 0, true);
+            totalExpensesFragment.setData(day, 0, 0, 0, 0, 0, 0, true);
         }
 
         //Ελεγχος και συνονισμός των καρτελών

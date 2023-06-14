@@ -62,7 +62,7 @@ public class CalculatorDayFragment extends Fragment {
                String total  = priceEditText.getText().toString();
                String selectedCategory = category_spinner.getSelectedItem().toString();
 
-               DBHandler dbHandler = new DBHandler(getContext(), null, null, 4);
+               DBHandler dbHandler = new DBHandler(getContext(), null, null, 5);
 
                //ελέγχει αν η τιμή ειναι αρνητική
                if (Integer.parseInt(total) > 0) {
@@ -71,8 +71,12 @@ public class CalculatorDayFragment extends Fragment {
                        dayValue.setSupermarket(total);
                    } else if (selectedCategory.equals("Entertainment")) {
                        dayValue.setEntertainment(total);
-                   } else {
+                   } else if (selectedCategory.equals("Home")){
                        dayValue.setHome(total);
+                   }else if (selectedCategory.equals("Transportation")){
+                       dayValue.setTransportation(total);
+                   }else{
+                       dayValue.setOther(total);
                    }
                    dayValue.setDay(dayTextView.getText().toString());
                    dayValue.setValue(total);
