@@ -59,44 +59,49 @@ public class CalculatorDayFragment extends Fragment {
        calculateButton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               String total  = priceEditText.getText().toString();
-               String selectedCategory = category_spinner.getSelectedItem().toString();
+               if(priceEditText.getText().toString().trim().equals(""))
+               {
+                   Toast.makeText(getContext(), "Enter value", Toast.LENGTH_SHORT).show();
+               }else {
+                   String total = priceEditText.getText().toString();
+                   String selectedCategory = category_spinner.getSelectedItem().toString();
 
-               DBHandler dbHandler = new DBHandler(getContext(), null, null, 5);
+                   DBHandler dbHandler = new DBHandler(getContext(), null, null, 5);
 
-               //ελέγχει αν η τιμή ειναι αρνητική
-               if (Integer.parseInt(total) > 0) {
-                   //ελέγχος κατηγορίας που επιλέχθηκε
-                   if (selectedCategory.equals("Supermarket")) {
-                       dayValue.setSupermarket(total);
-                   } else if (selectedCategory.equals("Entertainment")) {
-                       dayValue.setEntertainment(total);
-                   } else if (selectedCategory.equals("Home")){
-                       dayValue.setHome(total);
-                   }else if (selectedCategory.equals("Transportation")){
-                       dayValue.setTransportation(total);
-                   }else{
-                       dayValue.setOther(total);
+                   //ελέγχει αν η τιμή ειναι αρνητική
+                   if (Integer.parseInt(total) > 0) {
+                       //ελέγχος κατηγορίας που επιλέχθηκε
+                       if (selectedCategory.equals("Supermarket")) {
+                           dayValue.setSupermarket(total);
+                       } else if (selectedCategory.equals("Entertainment")) {
+                           dayValue.setEntertainment(total);
+                       } else if (selectedCategory.equals("Home")) {
+                           dayValue.setHome(total);
+                       } else if (selectedCategory.equals("Transportation")) {
+                           dayValue.setTransportation(total);
+                       } else {
+                           dayValue.setOther(total);
+                       }
+                       dayValue.setDay(dayTextView.getText().toString());
+                       dayValue.setValue(total);
+                       dayValue.setCategory(selectedCategory);
+
+                       if (!total.equals("") && !dayTextView.getText().equals("")) {
+                           dbHandler.addNewValue(dayValue);
+                       } else {
+                           priceEditText.setText("");
+                           Toast.makeText(getContext(), "Please enter valid values", Toast.LENGTH_SHORT).show();
+                       }
                    }
-                   dayValue.setDay(dayTextView.getText().toString());
-                   dayValue.setValue(total);
-                   dayValue.setCategory(selectedCategory);
 
-                   if (!total.equals("") && !dayTextView.getText().equals("")) {
-                       dbHandler.addNewValue(dayValue);
-                   } else {
-                       priceEditText.setText("");
-                       Toast.makeText(getContext(), "Please enter valid values", Toast.LENGTH_SHORT).show();
-                   }
+
+                   // Μετάβαση στην MainActivity
+                   Intent intent = new Intent(getActivity(), MainActivity.class);
+                   intent.putExtra("date", dayTextView.getText().toString());
+                   intent.putExtra("value", total);
+                   intent.putExtra("position", position);
+                   startActivity(intent);
                }
-
-
-               // Μετάβαση στην MainActivity
-               Intent intent = new Intent(getActivity(), MainActivity.class);
-               intent.putExtra("date", dayTextView.getText().toString());
-               intent.putExtra("value", total);
-               intent.putExtra("position", position);
-               startActivity(intent);
            }
        });
 
