@@ -30,7 +30,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-
+/*
+Framgent για την εμφάνιση των γραφημάτων με μηνιαία στατιστικά δεδομένα
+ */
 public class StatisticsFragment extends Fragment {
 
     private String month;

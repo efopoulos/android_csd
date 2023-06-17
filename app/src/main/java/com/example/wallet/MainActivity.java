@@ -24,6 +24,12 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/*
+Κύρια δραστηριότητα εφαρμογής με βασικές λειτουργίες
+ - Εμφάνιση ημερολογίου
+ - Υπολογισμός μηνιαίου συνολικού ποσου
+ - Αποθηκεύση/Ανάκτηση budget
+ */
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
@@ -43,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Na to doyme
         if(savedInstanceState != null) {
             budget = savedInstanceState.getInt("budget");
         }

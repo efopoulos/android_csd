@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
+/*
+Διεπαφή για την αλλαγή του διαθέσιμου Budget
+ */
 public class ChangeBudgetActivity extends MainActivity{
     Button BudgetButton;
     EditText MonthBudget;
@@ -26,7 +28,7 @@ public class ChangeBudgetActivity extends MainActivity{
 
     public void Change(View view) {
         String userInput = MonthBudget.getText().toString();
-        if (!userInput.isEmpty()) {
+        if (!userInput.isEmpty() && !(userInput instanceof String) ){
             BudgetManager.setBudget(userInput);
         }
         Intent intent = new Intent(this, MainActivity.class);

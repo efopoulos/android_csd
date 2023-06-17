@@ -12,7 +12,9 @@ import android.animation.ObjectAnimator;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
+/*
+Framgent για την εμφάνιση και την επεξεργασία των καταγεγραμμένων δαπανών
+ */
 public class TotalExpensesFragment extends Fragment {
     private TextView monthTextView;
     private TextView totalTextView;
@@ -305,6 +307,7 @@ public class TotalExpensesFragment extends Fragment {
             }
         });
 
+        otherEditText.setEnabled(false);
         processOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -320,7 +323,7 @@ public class TotalExpensesFragment extends Fragment {
                     totalTextView.setText(String.valueOf(total));
                     dayValue.setValue(String.valueOf(total));
                     other = Integer.parseInt(newTotal);
-                    dayValue.setTransportation(String.valueOf(other));
+                    dayValue.setOther(String.valueOf(other));
                     dbHandler.updateValue(dayValue);
                 }
 

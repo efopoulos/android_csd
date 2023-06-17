@@ -7,7 +7,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.View;
-
+/*
+Διαχείρηση της βάσης δεδομένων SQLite της εφαρμογής
+Παρέχει λειτουργίες για:
+- Δημιουργία βάσης
+- Εισαγωγή και ενημέρωση δεδομένων
+- Ανάκτηση πληροφοριών
+ */
 public class DBHandler extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "valuesDB.db";

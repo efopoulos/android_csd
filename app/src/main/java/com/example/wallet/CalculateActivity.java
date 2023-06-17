@@ -23,7 +23,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
-
+/*
+Δραστηριότητα για τον υπολογισμό και την εμφάνιση των οικονομικων στοιχείων
+για μια συγκεκριμένη μέρα
+ */
 public class CalculateActivity extends AppCompatActivity {
     String day;
     private int position;

@@ -1,5 +1,6 @@
 package com.example.wallet;
-/*Δημιουργία ενός αντιεκιμένου Budget για αποθήκευση της τιμής Budget
+/*
+Δημιουργία ενός αντιεκιμένου Budget για αποθήκευση της τιμής Budget
 κατά την λειτουργία της εφαρμογης
  */
 public class BudgetManager {

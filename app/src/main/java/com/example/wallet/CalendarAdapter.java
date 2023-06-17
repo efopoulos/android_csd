@@ -8,7 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
+/*
+Κλάση υπεύθυνη για τη δημιουργία των αντικειμένων 'CalendarViewHolder'
+ */
 class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
 {
     private final ArrayList<String> daysOfMonth;

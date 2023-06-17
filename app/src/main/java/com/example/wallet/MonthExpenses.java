@@ -25,7 +25,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
-
+/*
+Δραστηριότητα για εμφάνιση των μηνιαίων εξόδων και στατιστικών πληροφοριών
+ */
 public class MonthExpenses extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;

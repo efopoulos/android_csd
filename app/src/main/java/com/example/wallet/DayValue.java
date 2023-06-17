@@ -1,6 +1,8 @@
 package com.example.wallet;
 
-//Κλαση για προσωρινη φυλλαξη ζευγους μέρας-τιμών
+/*
+Αποθήκευση τιμών που σχετίζονται με μια συγκεκριμένη μέρα
+ */
 public class DayValue {
     private String value;
     private String day;
@@ -21,7 +23,6 @@ public class DayValue {
         this.value = value;
         this.day = String.valueOf(day);
         this.category = String.valueOf(category);
-
     }
     public DayValue() {
     }
@@ -44,9 +45,9 @@ public class DayValue {
     public String getEntertainment() {return this.entertainment;}
     public void setHome(String home) {this.home = home; }
     public String getHome() {return this.home;}
-    public void setOther(String other) {this.other = other; }
-    public String getOther() {return this.transportation;}
-    public void setTransportation(String other) {this.other = other; }
+    public void setOther(String other) {this.other = other;}
+    public String getOther() {return this.other;}
+    public void setTransportation(String transportation) {this.transportation = transportation; }
     public String getTransportation() {return this.transportation;}
     public String getTotalValue() {
         String totalValue = String.valueOf(Integer.parseInt(supermarket) + Integer.parseInt(entertainment)+Integer.parseInt(home));

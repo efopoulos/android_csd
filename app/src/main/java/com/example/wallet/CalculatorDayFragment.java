@@ -16,7 +16,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/*
+Fragment για την καταχώρηση ημερίσιων δαπανών
+ */
 public class CalculatorDayFragment extends Fragment {
 
     //εισαγωγή τιμής

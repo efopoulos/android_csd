@@ -23,7 +23,9 @@ import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-
+/*
+Δραστηριότητα για προβολή και διαχείρηση οικονομικών υποχρεώσεων
+ */
 public class CommitmentActivity extends MainActivity {
     Button add;
     LinearLayout layout;
