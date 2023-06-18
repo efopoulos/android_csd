@@ -170,14 +170,13 @@ public class TotalExpensesFragment extends Fragment {
             public void onClick(View v) {
                 //Εισαγωγή νεας τιμής από τον χρήστη
                 String newTotal = supermarketEditText.getText().toString();
-
                 DBHandler dbHandler = new DBHandler(getContext(), null, null, 5);
                 //Ορισμός της τρέχουσας ημερομηνίας στο DayValue, και την κατηγορία που μας ενδιαφέρει
                 dayValue.setDay(monthTextView.getText().toString());
                 dayValue.setCategory("Supermarket");
 
                 //Αν η νέα τιμή διαφέρει από την παλια τότε
-                if (!newTotal.equals(String.valueOf(supermarket))) {
+                if (!newTotal.equals(String.valueOf(supermarket)) && !newTotal.equals("")) {
                     //το νεο συνολικό ποσό ειναι η αφαίρεση της προηγούμενης τιμής από το αρχικό ποσο
                     //και το άρθροισμα της νέας τιμής
                     total = total - supermarket + Integer.parseInt(newTotal);
@@ -204,7 +203,8 @@ public class TotalExpensesFragment extends Fragment {
                 TransportationProcess(view);
                 OtherProcess(view);
             }
-        });
+
+    });
 
         //Η ίδια διαδικασία επαναλλαμβάνεται και για τις άλλες δύο κατηγορίες
         entertainmentEditText.setEnabled(false);
@@ -218,7 +218,7 @@ public class TotalExpensesFragment extends Fragment {
                 dayValue.setDay(monthTextView.getText().toString());
                 dayValue.setCategory("Entertainment");
 
-                if (!newTotal.equals(String.valueOf(entertainment))) {
+                if (!newTotal.equals(String.valueOf(entertainment)) && !newTotal.equals("")) {
                     total = total - entertainment + Integer.parseInt(newTotal);
                     totalTextView.setText(String.valueOf(total));
                     dayValue.setValue(String.valueOf(total));
@@ -250,7 +250,7 @@ public class TotalExpensesFragment extends Fragment {
                 dayValue.setDay(monthTextView.getText().toString());
                 dayValue.setCategory("Home");
 
-                if (!newTotal.equals(String.valueOf(home))) {
+                if (!newTotal.equals(String.valueOf(home)) && !newTotal.equals("")) {
                     total = total - home + Integer.parseInt(newTotal);
                     totalTextView.setText(String.valueOf(total));
                     dayValue.setValue(String.valueOf(total));
@@ -284,7 +284,7 @@ public class TotalExpensesFragment extends Fragment {
                 dayValue.setDay(monthTextView.getText().toString());
                 dayValue.setCategory("Transportation");
 
-                if (!newTotal.equals(String.valueOf(transportation))) {
+                if (!newTotal.equals(String.valueOf(transportation)) && !newTotal.equals("")) {
                     total = total - transportation + Integer.parseInt(newTotal);
                     totalTextView.setText(String.valueOf(total));
                     dayValue.setValue(String.valueOf(total));
@@ -317,7 +317,7 @@ public class TotalExpensesFragment extends Fragment {
                 dayValue.setDay(monthTextView.getText().toString());
                 dayValue.setCategory("Other");
 
-                if (!newTotal.equals(String.valueOf(other))) {
+                if (!newTotal.equals(String.valueOf(other)) && !newTotal.equals("")) {
                     total = total - other + Integer.parseInt(newTotal);
                     totalTextView.setText(String.valueOf(total));
                     dayValue.setValue(String.valueOf(total));

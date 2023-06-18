@@ -64,7 +64,7 @@ public class CalculatorDayFragment extends Fragment {
                    DBHandler dbHandler = new DBHandler(getContext(), null, null, 5);
 
                    //Ελέγχος για την μη εισαγηγή αρνητικής τιμής
-                   if (Integer.parseInt(total) > 0) {
+                   if (Integer.parseInt(total) > 0 && total.matches("\\d+") ) {
                        //Ελέγχος κατηγορίας που επιλέχθηκε
                        if (selectedCategory.equals("Supermarket")) {
                            dayValue.setSupermarket(total);
