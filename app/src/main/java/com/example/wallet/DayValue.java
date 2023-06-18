@@ -13,17 +13,6 @@ public class DayValue {
     private String transportation;
     private String other;
 
-
-
-    public DayValue(CharSequence day, String value) {
-        this.value = value;
-        this.day = String.valueOf(day);
-    }
-    public DayValue(CharSequence day, String value, String category) {
-        this.value = value;
-        this.day = String.valueOf(day);
-        this.category = String.valueOf(category);
-    }
     public DayValue() {
     }
 
@@ -49,9 +38,5 @@ public class DayValue {
     public String getOther() {return this.other;}
     public void setTransportation(String transportation) {this.transportation = transportation; }
     public String getTransportation() {return this.transportation;}
-    public String getTotalValue() {
-        String totalValue = String.valueOf(Integer.parseInt(supermarket) + Integer.parseInt(entertainment)+Integer.parseInt(home));
-        return totalValue;
-    }
 
 }

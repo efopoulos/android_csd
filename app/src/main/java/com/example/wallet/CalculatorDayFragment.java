@@ -20,21 +20,14 @@ import android.widget.Toast;
 Fragment για την καταχώρηση ημερίσιων δαπανών
  */
 public class CalculatorDayFragment extends Fragment {
-
-    //εισαγωγή τιμής
     EditText priceEditText;
-    //αυτό που δείχνει την μέρα
     TextView dayTextView;
-    //αντικείμενο της κλάσης dayValue για να εισάγει τις τιμες σττην βάση
     DayValue dayValue;
     Spinner category_spinner;
     String day;
     private int position;
 
-    public CalculatorDayFragment() {
-        // Required empty public constructor
-    }
-
+    public CalculatorDayFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,9 +63,9 @@ public class CalculatorDayFragment extends Fragment {
 
                    DBHandler dbHandler = new DBHandler(getContext(), null, null, 5);
 
-                   //ελέγχει αν η τιμή ειναι αρνητική
+                   //Ελέγχος για την μη εισαγηγή αρνητικής τιμής
                    if (Integer.parseInt(total) > 0) {
-                       //ελέγχος κατηγορίας που επιλέχθηκε
+                       //Ελέγχος κατηγορίας που επιλέχθηκε
                        if (selectedCategory.equals("Supermarket")) {
                            dayValue.setSupermarket(total);
                        } else if (selectedCategory.equals("Entertainment")) {
@@ -97,7 +90,7 @@ public class CalculatorDayFragment extends Fragment {
                    }
 
 
-                   // Μετάβαση στην MainActivity
+                   //Μετάβαση στην MainActivity
                    Intent intent = new Intent(getActivity(), MainActivity.class);
                    intent.putExtra("date", dayTextView.getText().toString());
                    intent.putExtra("value", total);
@@ -110,8 +103,7 @@ public class CalculatorDayFragment extends Fragment {
         return view;
     }
 
-
-    //κλάση που καλέιται από την CalculateActivity
+    //Κλάση που καλέιται από την CalculateActivity για ορισμό της ημέρας
     public void setData(String day) {
         this.day = day;
     }

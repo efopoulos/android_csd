@@ -21,14 +21,12 @@ public class ChangeBudgetActivity extends MainActivity{
 
         Intent intent = getIntent();
         intent.getStringExtra("budgetNow");
-        String button = intent.getStringExtra("buttonText");
-
     }
 
-
+    //Ανάκτηση νέας τιμής πουεισάγεται από τον χρήστη
     public void Change(View view) {
         String userInput = MonthBudget.getText().toString();
-        if (!userInput.isEmpty() && !(userInput instanceof String) ){
+        if (!userInput.isEmpty() && userInput.matches("\\d+") ){
             BudgetManager.setBudget(userInput);
         }
         Intent intent = new Intent(this, MainActivity.class);
@@ -39,6 +37,7 @@ public class ChangeBudgetActivity extends MainActivity{
         onBackPressed();
         return true;
     }
+
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("MonthBudget", MonthBudget.getText().toString());
         super.onSaveInstanceState(outState);

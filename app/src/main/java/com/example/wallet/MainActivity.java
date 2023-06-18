@@ -33,22 +33,19 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
-    //Σημερινή ημερομηνία
     private LocalDate selectedDate;
     private Button budgetButton;
     private TextView totalTextView;
-
     BottomNavigationView bottomNavigationView;
-
     int budget ;
 
     String value;
     private ArrayList<String> totalDaysInMonthArray;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //έλεγχος ύπαρξης προηγούμενης κατάστασης και ανάκτηση προϋπολογισμού
         if(savedInstanceState != null) {
             budget = savedInstanceState.getInt("budget");
         }
@@ -66,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         setMonthView();
         monthlySum();
+
+        //Ενέργειες για τη δημιουργία και τον ορισμό των επιλογών της Bottom Navigation View
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -90,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     }
 
+    //Υπολογιμός συνολικών εξόδων (total) για τον μήνα
     private int calculateMonthlySum(){
         int sum = 0;
         for (int i = 0; i < totalDaysInMonthArray.size(); i++) {
@@ -100,15 +100,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         return sum;
     }
 
+    //Ορισμός του κειμένου κουμπιού budgetButton και αλλαγή
+    //χρώματος του συνολικού ποσού στην περίπτωση που υπερβεί το budgte
     private void monthlySum() {
-
         int sum = calculateMonthlySum();
-        Intent intent = getIntent();
 
         String userInput = BudgetManager.getBudget();
 
         if (userInput != null) {
-
             budget = Integer.parseInt(userInput);
         }
         budgetButton.setText(Integer.toString(budget));
@@ -119,11 +118,10 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         } else {
             totalTextView.setTextColor(Color.GREEN);
         }
-
     }
 
+    //Ορίζει τις ημερίσιες τιμές για κάθε μέρα ξεχωριστά
     private void setMonthView() {
-
         Intent intent = getIntent();
         String date = intent.getStringExtra("date");
         value = intent.getStringExtra("value");
@@ -141,20 +139,19 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         monthlySum();
     }
 
-    //δημιουργία λίστας με τις μέρες του μήνα
+    //Δημιουργία λίστας με τις μέρες του μήνα
     private ArrayList<String> daysInMonthArray(LocalDate date) {
-        //edo 3anadimiourgeite den prepei
         //υπολογισμός μέρες του μήνα
         ArrayList<String> daysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
 
         int daysInMonth = yearMonth.lengthOfMonth();
 
-        //μέρα της εβδομάδας που ξεκινάει ο μήνας
+        //Μέρα της εβδομάδας που ξεκινάει ο μήνας
         LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
-        //γεμίζει την λίστα με τις μέρες της εδβομάδας
+        //Γεμίζει την λίστα με τις μέρες της εδβομάδας
         for (int i = 1; i <= 42; i++) {
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 daysInMonthArray.add("");
@@ -165,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         return daysInMonthArray;
     }
 
-    //ελεγχος για κάθε θέση του πίνακα
+    //Έλεγχος για κάθε θέση του πίνακα
     private ArrayList<String> totalDaysInMonthArray(LocalDate date, String insertedDate, String value, int position) {
         DBHandler dbHandler = new DBHandler(this, null, null, 5);
 
@@ -177,14 +174,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
         int emptyCells = 0;
-        //ελέγχεται για κάθε θέση αν αντιστοιχεί σε μια ημέρα του τρέχοντος μήνα
+        //Ελέγχεται για κάθε θέση αν αντιστοιχεί σε μια ημέρα του τρέχοντος μήνα
         for (int i = 1; i <= 42; i++) {
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 totalDaysInMonthArray.add(null);
                 emptyCells = i;
             } else {
-                //διαλέγει τον μηνα που θα εμφανισει συμφωνα με την σημερινη ημερομηνια
-                //διαλέγει την ημέρα (position) του μηνα που θα εμφανίσει
+                //Διαλέγει τον μηνα που θα εμφανισει συμφωνα με την σημερινη ημερομηνια
+                //Διαλέγει την ημέρα (position) του μηνα που θα εμφανίσει
                 String key = (i - emptyCells) + " " + monthYearFromDate(selectedDate);
                 DayValue dayValue = dbHandler.findDay(key);
 
@@ -201,19 +198,20 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         return totalDaysInMonthArray;
     }
 
-    //επιστροφή μήνα και έτος
+    //Επιστροφή μήνα και έτος
     private String monthYearFromDate(LocalDate date) {
         DateTimeFormatter formatter = null;
         formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
         return date.format(formatter);
     }
 
-    //προηγοημενος-επομενος μηνας
+    //Προηγοημενος μηνας
     public void previousMonthAction(View view) {
         selectedDate = selectedDate.minusMonths(1);
         setMonthView();
     }
 
+    //Επομενος μηνας
     public void nextMonthAction(View view) {
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
@@ -230,23 +228,20 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         intent.putExtra("month", monthYearFromDate(selectedDate));
         startActivity(intent);
     }
-    public void MonthExpenses(View view){
-        Intent intent = new Intent(this, MonthExpenses.class);
-        intent.putExtra("month", monthYearFromDate(selectedDate));
-        startActivity(intent);
-    }
 
     public void ChangeBudgetActivity(View view){
         Intent intent = new Intent(this, ChangeBudgetActivity.class);
         intent.putExtra("budgetNow", budgetButton.getText().toString());
         startActivity(intent);
     }
+
     private void saveBudgetValue(int budget) {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("budget", budget);
         editor.apply();
     }
+
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);

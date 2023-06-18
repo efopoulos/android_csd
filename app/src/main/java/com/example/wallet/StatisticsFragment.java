@@ -96,14 +96,12 @@ public class StatisticsFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        Log.d("paok", "onSaveInstanceState: DAY: " + DBDayWithoutFirstCharacter);
-        Log.d("paok", "onSaveInstanceState: MONTH: " + MainMonth);
         outState.putString("saveDay", DBDayWithoutFirstCharacter);
         outState.putString("saveMonth", MainMonth);
         super.onSaveInstanceState(outState);
     }
 
-
+    //Δημιουργία και παρουσίαση του fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -159,7 +157,7 @@ public class StatisticsFragment extends Fragment {
             expenses.add(new BarEntry(i, total));
         }
 
-        //ταξινομεί τις ημέρες
+        //Ταξινόμηση των ημερών
         Comparator<String> dateComparator = new Comparator<String>() {
             @Override
             public int compare(String date1, String date2) {
@@ -179,8 +177,8 @@ public class StatisticsFragment extends Fragment {
         //Σχεδιασμός του γραφήματος με μπάρες\
         //Ενεργοποίηση εξόνων
         //Ορισμός ετικετών με βάση τη λίστα days
-        //ορισμός μεγεθών και δεδομένων
-        //προσθέτει κίνηση
+        //Ορισμός μεγεθών και δεδομένων
+        //Προσθεση κίνησης
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 

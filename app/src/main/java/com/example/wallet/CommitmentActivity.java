@@ -21,7 +21,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 /*
 Δραστηριότητα για προβολή και διαχείρηση οικονομικών υποχρεώσεων
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 public class CommitmentActivity extends MainActivity {
     Button add;
     LinearLayout layout;
-    //αποθήκευση δεδομένων για ανακατασκευή cardView
+    //Αποθήκευση δεδομένων για ανακατασκευή cardView
     SharedPreferences sharedPreferences;
     private ArrayList<String> savedCards = new ArrayList<>();
 
@@ -43,18 +42,17 @@ public class CommitmentActivity extends MainActivity {
         sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         savedCards = new ArrayList<>();
 
-        //ανάκτηση αποθηκευμένων καρτών από SharedPreferences και αποθήκευση στο savedCards
+        //Ανάκτηση αποθηκευμένων καρτών από SharedPreferences και αποθήκευση στο savedCards
         String savedCardsJson = sharedPreferences.getString("card_views", "");
 
         if (!savedCardsJson.isEmpty()) {
-            //οι αποθηκευμένες κάρτες μετατρέπονται σε λίστα αντικειμένων
+            //Οι αποθηκευμένες κάρτες μετατρέπονται σε λίστα αντικειμένων
             savedCards = new Gson().fromJson(savedCardsJson, new TypeToken<ArrayList<String>>() {}.getType());
         }
 
-        //ανακτούνται και δημιουργούνται οι αποθηκευμένες κάρτες
+        //Ανακτούνται και δημιουργούνται οι αποθηκευμένες κάρτες
         rebuildCardView();
 
-        //το κουμπί που προσθέτει κάρτες
         add = findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +61,7 @@ public class CommitmentActivity extends MainActivity {
             }
         });
 
-        //κώδικας για την προσθήκη BottomNavigationView
+        //Προσθήκη BottomNavigationView
         Intent intent = getIntent();
         String month = intent.getStringExtra("month");
 
@@ -93,7 +91,7 @@ public class CommitmentActivity extends MainActivity {
         });
     }
 
-    //δημιουργία του παράθυρου διαλόγου (dialog) που εισάγει τις πληροφορίες
+    //Δημιουργία του παράθυρου διαλόγου (dialog) που εισάγει τις πληροφορίες
     private void buildDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog, null);
@@ -102,6 +100,7 @@ public class CommitmentActivity extends MainActivity {
         EditText amount = view.findViewById(R.id.amountEdit);
         Switch dialogSwitch = view.findViewById(R.id.DialogSwitch);
 
+        //Ορισμός κουμπιών 'ΟΚ' και 'Cancel'
         builder.setView(view);
         builder.setTitle("Enter a new financial commitment")
                 .setPositiveButton("OK", null)
@@ -116,6 +115,7 @@ public class CommitmentActivity extends MainActivity {
         dialog.setCancelable(false);
         dialog.show();
 
+        //Ορισμός λειτουργίας σε περίπτωση που πατηθεί το 'ΟΚ'
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,10 +133,10 @@ public class CommitmentActivity extends MainActivity {
         });
     }
 
-    //προσθέτει μία νέα κάρτα
+    //Προσθέτει μία νέα κάρτα
     private void addCard(String name, String amount, boolean switchState) {
         addCardView(name, amount, switchState);
-        //μετατρέπουμε την boolean τιμή του switch σε string
+        //Μετατροπή της boolean τιμής του switch σε string
         String switchToString = String.valueOf(switchState);
         String cardData = name + "," + amount + "," + switchToString;
         savedCards.add(cardData);
@@ -144,7 +144,7 @@ public class CommitmentActivity extends MainActivity {
         saveCardsToSharedPreferences();
     }
 
-    //αποθήκευση της λίστας savedCards στο SharedPreferences
+    //Αποθήκευση της λίστας savedCards στο SharedPreferences
     private void saveCardsToSharedPreferences() {
         String updatedCardsJson = new Gson().toJson(savedCards);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -153,7 +153,7 @@ public class CommitmentActivity extends MainActivity {
     }
 
 
-    //προσθήκη νέας καρτέλας στο layout
+    //Προσθήκη νέας καρτέλας στο layout
     private void addCardView(String name, String amount, boolean switchState) {
         View view = getLayoutInflater().inflate(R.layout.card, null);
 
@@ -174,14 +174,13 @@ public class CommitmentActivity extends MainActivity {
             }
         });
 
-        //σε περίπτωση αλλαγής του switch Καλείται η κλάση updateSwitch
+        //Σε περίπτωση αλλαγής του switch καλείται η κλάση updateSwitch
         cardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 updateSwitchState(name, amount, isChecked);
             }
         });
-
         layout.addView(view);
     }
 
@@ -203,9 +202,9 @@ public class CommitmentActivity extends MainActivity {
         }
     }
 
-    //αφαίρεση μιας καρτέλας από το SharedPreferences
+    //Αφαίρεση μιας καρτέλας από το SharedPreferences
     private void removeCardFromSharedPreferences(String name, String amount) {
-        //ενημερώνονται τα δεδομένα της λίστας σε περίπτωση διαγραφής
+        //Ενημερώνονται τα δεδομένα της λίστας σε περίπτωση διαγραφής
         ArrayList<String> updatedCards = new ArrayList<>();
         for (String card : savedCards) {
             String[] cardData = card.split(",");
@@ -219,7 +218,7 @@ public class CommitmentActivity extends MainActivity {
         saveCardsToSharedPreferences();
     }
 
-    //ανακατασκευή των card views
+    //Ανακατασκευή των card views
     private void rebuildCardView() {
         layout.removeAllViews();
         for (String card : savedCards) {

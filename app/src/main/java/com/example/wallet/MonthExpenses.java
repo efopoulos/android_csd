@@ -36,7 +36,7 @@ public class MonthExpenses extends AppCompatActivity {
     TotalExpensesFragment totalExpensesFragment = new TotalExpensesFragment();
     StatisticsFragment statisticsFragment = new StatisticsFragment();
 
-
+    //Ανάκτηση των μηνιαίων εξόδων από τη βάση
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_month);
@@ -70,7 +70,6 @@ public class MonthExpenses extends AppCompatActivity {
 
                 String DBDay = days;
                 String DBDayWithoutFirstCharacter = DBDay.substring(2);
-                //αφαιρούμε τα κενά
                 DBDayWithoutFirstCharacter = DBDayWithoutFirstCharacter.trim();
                 MainMonth = MainMonth.trim();
                 if (DBDayWithoutFirstCharacter.equals(MainMonth)) {
@@ -90,7 +89,7 @@ public class MonthExpenses extends AppCompatActivity {
         totalExpensesFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome, monthlyTransportation, monthlyOther, false);
         statisticsFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome, monthlyTransportation, monthlyOther);
 
-
+        //Ενημέρωση του UI ανάλογα με την επιλεγμένη καρτέλα
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -145,6 +144,7 @@ public class MonthExpenses extends AppCompatActivity {
 
     }
 
+    //Δημιουργία και ρύθμιση του ViewPager και του Adapter
     private void setupViewPager() {
         tabLayout.setupWithViewPager(viewPager);
         VPAdapter vpAdapter = new VPAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);

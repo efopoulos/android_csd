@@ -51,7 +51,7 @@ public class DBHandler extends SQLiteOpenHelper{
         db.execSQL(query);
     }
 
-    //ενημέρωση βάσης
+    //Ενημέρωση βάσης
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VALUES);
@@ -67,7 +67,9 @@ public class DBHandler extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         SQLiteDatabase db = this.getWritableDatabase();
 
+        //Έλεγχος για ύπαρξη προηγομένων εγγραφών για την συγκεκριμένη ημέρα
         if(found==null){
+            //ΕΝημέσωη του συολικού ποσού και του ποσού τηα αντίστοιχης κατηγορίας
             values.put(COLUMN_DAYS, dayValue.getDay());
             values.put(COLUMN_VALUE, dayValue.getValue());
             if (category.equals("Supermarket")) {
@@ -103,6 +105,7 @@ public class DBHandler extends SQLiteOpenHelper{
             }
             db.insert(TABLE_VALUES, null, values);
         }
+        //Αν δεν υπάρχει δημιουργεί νέα εγγραφη στη βάση
         else{
             String query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_VALUE + " = " + COLUMN_VALUE + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
             db.execSQL(query);
@@ -124,26 +127,23 @@ public class DBHandler extends SQLiteOpenHelper{
         //db.delete(TABLE_VALUES, null, null);
     }
 
-
     public void updateValue(DayValue dayValue) {
-        //παιρνουμε την μέρα που αποθηκευτηκε στο αντικειμενο
         String dayName = dayValue.getDay();
-        //το νέο υπόλοιπο
         String newValue = dayValue.getValue();
-        //την κατηγορία
         String category = dayValue.getCategory();
-        //ελέγχουμε αν η υπάρχει η μέρα στην βάση
+
+        //Έλεγχος ύπαρξης μέρας στη βάση
         DayValue found = findDay(dayName);
+
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        //αν υπάρχει
+
         if(found!=null){
             String query;
-            //ορίζουμε νέα τιμή value
+            //Μετατροπή της τιμής value
             query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_VALUE + " = '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
             db.execSQL(query);
 
-            //αντικαθιστούμε την παλιά τιμή
+            //Αντικατάσταση της παλιάς τιμής
             if (category.equals("Supermarket")) {
                 String newSupermarket = dayValue.getSupermarket();
                 query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_SUPERMARKET + " = '" + newSupermarket + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
@@ -161,13 +161,14 @@ public class DBHandler extends SQLiteOpenHelper{
                 query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_OTHER + " = '" + newOther + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
             }
             db.execSQL(query);
-        //αλλιώς καλλούμε την συνάρτηση για εισαγωγή εκ νέου
+        //Αλλιώς καλλείται η συνάρτηση για εισαγωγή εκ νέου
         }else{
             addNewValue(dayValue);
         }
 
     }
 
+    //Αναζήτση μίας συγκεκριμένης μέρας στον πίνακα της βάσης
     public DayValue findDay(String day_name) {
         String query = "SELECT * FROM " + TABLE_VALUES +  " WHERE " +
                 COLUMN_DAYS + " = '" + day_name + "'";

@@ -37,7 +37,6 @@ public class CalculateActivity extends AppCompatActivity {
     CalculatorDayFragment calculatorDayFragment = new CalculatorDayFragment();
     TotalExpensesFragment totalExpensesFragment = new TotalExpensesFragment();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +54,7 @@ public class CalculateActivity extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_VALUES, null);
 
-        //ελέγχουμε σν η μέρα υπάρχει στον πίνακα
+        //Eλέγχουμε σν η μέρα υπάρχει στον πίνακα
         Boolean dayFoundFlag = false;
         if (cursor.moveToFirst()) {
             do {
@@ -92,15 +91,14 @@ public class CalculateActivity extends AppCompatActivity {
 
         //Ελεγχος και συνονισμός των καρτελών
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            //αν η καρτέλα βρίσκεται στη θέση 0 τότε εισάγεται το calculatorDayFragment
-            //αν βρίσεκται στη θέση 1 τότε εισάγεται το totalFragment
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                //Aν η καρτέλα βρίσκεται στη θέση 0 τότε εισάγεται το calculatorDayFragment
                 if (tab.getPosition() == 0) {
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.viewpager_calculator, calculatorDayFragment)
                             .commit();
-
+                //Aν βρίσεκται στη θέση 1 τότε εισάγεται το totalFragment
                 } else if (tab.getPosition() == 1) {
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.viewpager_calculator, totalExpensesFragment)
@@ -115,9 +113,7 @@ public class CalculateActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
             }
-
         });
-
 
         //Κώδικας για την δημιουργία του BottomNavigationBar
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -144,10 +140,9 @@ public class CalculateActivity extends AppCompatActivity {
                 return false;
             }
         });
-
     }
 
-
+    //Επισύναψη αντίσοιχων fragments που θα εμφανίζονται σε κάθε καρτέλα
     private void setupViewPager() {
         tabLayout.setupWithViewPager(viewPager);
         VPAdapter vpAdapter = new VPAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -155,6 +150,4 @@ public class CalculateActivity extends AppCompatActivity {
         vpAdapter.addFragment(totalExpensesFragment, "Day Expenses");
         viewPager.setAdapter(vpAdapter);
     }
-
-
 }

@@ -30,7 +30,6 @@ public class TotalExpensesFragment extends Fragment {
     private TextView otherPercentTextView;
     Boolean flag;
     DayValue dayValue;
-
     private TextView supermarketTextView;
     private TextView entertainmentTextView;
     private TextView homeTextView;
@@ -43,7 +42,6 @@ public class TotalExpensesFragment extends Fragment {
     private int home;
     private int transportation;
     private int other;
-
     private static final String MONTH = "month";
     private static final String TOTAL = "total";
     private static final String SUPERMARKET = "supermarket";
@@ -56,7 +54,6 @@ public class TotalExpensesFragment extends Fragment {
     private Button processHome;
     private Button processTransportation;
     private Button processOther;
-
 
     public TotalExpensesFragment(){
     }
@@ -90,6 +87,7 @@ public class TotalExpensesFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_total_expenses, container, false);
@@ -97,6 +95,7 @@ public class TotalExpensesFragment extends Fragment {
         if(savedInstanceState != null){
             flag = savedInstanceState.getBoolean("flag");
         }
+
         monthTextView = view.findViewById(R.id.month_id);
         totalTextView = view.findViewById(R.id.monthtotal_value);
 
@@ -124,7 +123,7 @@ public class TotalExpensesFragment extends Fragment {
         processTransportation = view.findViewById(R.id.transportation_process);
         processOther = view.findViewById(R.id.other_process);
 
-        //Ελέγχουμε αν το Fragment χρησιμοποιείται για τα έξοδα του μήνα ή για τα έξοδα της ημέρας
+        //Έλεγχος της κατηογίας ποσών που θα εμφανίσει το fragment (ημερίσια ή μηνιαία)
         if (flag) {
             processSupermarket.setVisibility(View.VISIBLE);
             processEntertainment.setVisibility(View.VISIBLE);
@@ -150,7 +149,7 @@ public class TotalExpensesFragment extends Fragment {
         transportationEditText.setEnabled(false);
         otherEditText.setEnabled(false);
 
-        //υπολογισμός ποσοστού και δημιουργία processBar
+        //Υπολογισμός ποσοστού και δημιουργία processBar
         SupermarketProcess(view);
         EntertainmentProcess(view);
         HomeProcess(view);
@@ -173,7 +172,7 @@ public class TotalExpensesFragment extends Fragment {
                 String newTotal = supermarketEditText.getText().toString();
 
                 DBHandler dbHandler = new DBHandler(getContext(), null, null, 5);
-                //Ορίζουμε την τρέχουσα ημερομηνία στο DayValue, και την κατηγορία που μας ενδιαφέρει
+                //Ορισμός της τρέχουσας ημερομηνίας στο DayValue, και την κατηγορία που μας ενδιαφέρει
                 dayValue.setDay(monthTextView.getText().toString());
                 dayValue.setCategory("Supermarket");
 
@@ -183,22 +182,22 @@ public class TotalExpensesFragment extends Fragment {
                     //και το άρθροισμα της νέας τιμής
                     total = total - supermarket + Integer.parseInt(newTotal);
                     totalTextView.setText(String.valueOf(total));
-                    //ορίζουμε το νέο συνολικο ποσο που υπολογίσαμε παραπάνω
+                    //Ορισός του νέου συνολικού ποσού που υπολογίσαμε παραπάνω
                     dayValue.setValue(String.valueOf(total));
-                    //η παλιά τιμή αντικαθιστάται με την καινούργια
+                    //Η παλιά τιμή αντικαθιστάται με την καινούργια
                     supermarket = Integer.parseInt(newTotal);
                     dayValue.setSupermarket(String.valueOf(supermarket));
-                    //στέλνουμε το αντικείμενο dayValue με όλα τα στοιχεία που μας ενδιαφέρουν στην
-                    // κλάση της βάσης για ανανέωση της βάσης
+                    //Στέλνουμε το αντικείμενο dayValue με όλα τα στοιχεία που μας ενδιαφέρουν στην
+                    //κλάση της βάσης για ανανέωση της βάσης
                     dbHandler.updateValue(dayValue);
                 }
 
-                //έλεγχος της ενεργοποίηση ή απενεργοποίηση ενός πεδίου κειμένου
+                //Έλεγχος της ενεργοποίηση ή απενεργοποίηση ενός πεδίου κειμένου
                 supermarketEditText.setEnabled(!supermarketEditText.isEnabled());
                 if (supermarketEditText.isEnabled()) {
                     supermarketEditText.requestFocus();
                 }
-                //επαναδημιουργούμε τα processBars με τα νέα δεδομένα
+                //Επαναδημιουργίσ ταυ processBars με τα νέα δεδομένα
                 SupermarketProcess(view);
                 EntertainmentProcess(view);
                 HomeProcess(view);
@@ -442,6 +441,7 @@ public class TotalExpensesFragment extends Fragment {
         animation.start();
         otherPercentTextView.setText(otherPercentage + "%");
     }
+
     public void setData(String month, int total, int supermarket, int entertainment, int home, int transportation,
             int other, boolean flag) {
         this.month = month;
@@ -453,5 +453,4 @@ public class TotalExpensesFragment extends Fragment {
         this.other = other;
         this.flag=flag;
     }
-
 }
