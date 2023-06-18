@@ -7,9 +7,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.View;
-
+/*
+Διαχείρηση της βάσης δεδομένων SQLite της εφαρμογής
+Παρέχει λειτουργίες για:
+- Δημιουργία βάσης
+- Εισαγωγή και ενημέρωση δεδομένων
+- Ανάκτηση πληροφοριών
+ */
 public class DBHandler extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "valuesDB.db";
     public static final String COLUMN_DAYS = "days";
     public static final String COLUMN_VALUE = "value";
@@ -17,6 +23,10 @@ public class DBHandler extends SQLiteOpenHelper{
     public static final String COLUMN_SUPERMARKET = "supermarket";
     public static final String COLUMN_ENTERTAINMENT = "entertainment";
     public static final String COLUMN_HOME = "home";
+    public static final String COLUMN_TRANSPORTATION = "transportation";
+    public static final String COLUMN_OTHER = "other";
+
+    String totalValue = String.valueOf(0);
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -35,14 +45,19 @@ public class DBHandler extends SQLiteOpenHelper{
         db.execSQL(query);
         query = "ALTER TABLE " + TABLE_VALUES + " ADD COLUMN " + COLUMN_HOME + " TEXT;";
         db.execSQL(query);
+        query = "ALTER TABLE " + TABLE_VALUES + " ADD COLUMN " + COLUMN_TRANSPORTATION + " TEXT;";
+        db.execSQL(query);
+        query = "ALTER TABLE " + TABLE_VALUES + " ADD COLUMN " + COLUMN_OTHER + " TEXT;";
+        db.execSQL(query);
     }
 
-    //ενημέρωση βάσης
+    //Ενημέρωση βάσης
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VALUES);
         onCreate(db);
     }
+
     public void addNewValue(DayValue dayValue) {
         String dayName = dayValue.getDay();
         String newValue = dayValue.getValue();
@@ -52,24 +67,45 @@ public class DBHandler extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         SQLiteDatabase db = this.getWritableDatabase();
 
+        //Έλεγχος για ύπαρξη προηγομένων εγγραφών για την συγκεκριμένη ημέρα
         if(found==null){
+            //ΕΝημέσωη του συολικού ποσού και του ποσού τηα αντίστοιχης κατηγορίας
             values.put(COLUMN_DAYS, dayValue.getDay());
             values.put(COLUMN_VALUE, dayValue.getValue());
             if (category.equals("Supermarket")) {
                 values.put(COLUMN_SUPERMARKET, newValue);
                 values.put(COLUMN_ENTERTAINMENT, 0);
                 values.put(COLUMN_HOME, 0);
+                values.put(COLUMN_TRANSPORTATION, 0);
+                values.put(COLUMN_OTHER, 0);
             } else if (category.equals("Entertainment")) {
                 values.put(COLUMN_SUPERMARKET, 0);
                 values.put(COLUMN_ENTERTAINMENT, newValue);
                 values.put(COLUMN_HOME, 0);
-            }else{
+                values.put(COLUMN_TRANSPORTATION, 0);
+                values.put(COLUMN_OTHER, 0);
+            }else if (category.equals("Home")){
                 values.put(COLUMN_SUPERMARKET, 0);
                 values.put(COLUMN_ENTERTAINMENT, 0);
                 values.put(COLUMN_HOME, newValue);
+                values.put(COLUMN_TRANSPORTATION, 0);
+                values.put(COLUMN_OTHER, 0);
+            }else if(category.equals("Transportation")){
+                values.put(COLUMN_SUPERMARKET, 0);
+                values.put(COLUMN_ENTERTAINMENT, 0);
+                values.put(COLUMN_HOME, 0);
+                values.put(COLUMN_TRANSPORTATION, newValue);
+                values.put(COLUMN_OTHER, 0);
+            }else{
+                values.put(COLUMN_SUPERMARKET, 0);
+                values.put(COLUMN_ENTERTAINMENT, 0);
+                values.put(COLUMN_HOME, 0);
+                values.put(COLUMN_TRANSPORTATION, 0);
+                values.put(COLUMN_OTHER, newValue);
             }
             db.insert(TABLE_VALUES, null, values);
         }
+        //Αν δεν υπάρχει δημιουργεί νέα εγγραφη στη βάση
         else{
             String query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_VALUE + " = " + COLUMN_VALUE + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
             db.execSQL(query);
@@ -78,8 +114,12 @@ public class DBHandler extends SQLiteOpenHelper{
                 query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_SUPERMARKET + " = " + COLUMN_SUPERMARKET + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
             } else if (category.equals("Entertainment")) {
                 query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_ENTERTAINMENT + " = " + COLUMN_ENTERTAINMENT + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
-            }else{
+            }else if (category.equals("Home")){
                 query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_HOME + " = " + COLUMN_HOME + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            }else if (category.equals("Transportation")){
+                query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_TRANSPORTATION + " = " + COLUMN_TRANSPORTATION + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            }else{
+                query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_OTHER + " = " + COLUMN_OTHER + " + '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
             }
             db.execSQL(query);
         }
@@ -87,6 +127,48 @@ public class DBHandler extends SQLiteOpenHelper{
         //db.delete(TABLE_VALUES, null, null);
     }
 
+    public void updateValue(DayValue dayValue) {
+        String dayName = dayValue.getDay();
+        String newValue = dayValue.getValue();
+        String category = dayValue.getCategory();
+
+        //Έλεγχος ύπαρξης μέρας στη βάση
+        DayValue found = findDay(dayName);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        if(found!=null){
+            String query;
+            //Μετατροπή της τιμής value
+            query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_VALUE + " = '" + newValue + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            db.execSQL(query);
+
+            //Αντικατάσταση της παλιάς τιμής
+            if (category.equals("Supermarket")) {
+                String newSupermarket = dayValue.getSupermarket();
+                query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_SUPERMARKET + " = '" + newSupermarket + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            } else if (category.equals("Entertainment")) {
+                String newEntertainment = dayValue.getEntertainment();
+                query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_ENTERTAINMENT + " = '" + newEntertainment + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            }else if (category.equals("Home")){
+                String newHome = dayValue.getHome();
+                query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_HOME + " = '" + newHome + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            }else if (category.equals("Transportation")){
+                String newTransportation = dayValue.getTransportation();
+                query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_TRANSPORTATION + " = '" + newTransportation + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            }else{
+                String newOther = dayValue.getOther();
+                query = "UPDATE " + TABLE_VALUES + " SET " + COLUMN_OTHER + " = '" + newOther + "' WHERE " + COLUMN_DAYS + " = '" + dayName + "'";
+            }
+            db.execSQL(query);
+        //Αλλιώς καλλείται η συνάρτηση για εισαγωγή εκ νέου
+        }else{
+            addNewValue(dayValue);
+        }
+
+    }
+
+    //Αναζήτση μίας συγκεκριμένης μέρας στον πίνακα της βάσης
     public DayValue findDay(String day_name) {
         String query = "SELECT * FROM " + TABLE_VALUES +  " WHERE " +
                 COLUMN_DAYS + " = '" + day_name + "'";

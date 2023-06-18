@@ -8,7 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
+/*
+Κλάση υπεύθυνη για τη δημιουργία των αντικειμένων 'CalendarViewHolder'
+ */
 class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
 {
     private final ArrayList<String> daysOfMonth;
@@ -22,6 +24,7 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
         this.onItemListener = onItemListener;
     }
 
+    //Δημιουργία ViewHolder για κάθε στοιχείο του RecycleView
     @NonNull
     @Override
     public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
@@ -33,6 +36,8 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
         return new CalendarViewHolder(view, onItemListener);
     }
 
+    //Ανάθεση κειμένων στα πεδία του ViewHolder για κάθε στοιχείο του RecyleView
+    //βασιζόμενη στις τιμές που περιέχονται στις λίστες 'daysOfMonth' και 'totalDaysOfMonth'x
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position)
     {

@@ -3,7 +3,9 @@ package com.example.wallet;
 import static com.example.wallet.DBHandler.COLUMN_DAYS;
 import static com.example.wallet.DBHandler.COLUMN_ENTERTAINMENT;
 import static com.example.wallet.DBHandler.COLUMN_HOME;
+import static com.example.wallet.DBHandler.COLUMN_OTHER;
 import static com.example.wallet.DBHandler.COLUMN_SUPERMARKET;
+import static com.example.wallet.DBHandler.COLUMN_TRANSPORTATION;
 import static com.example.wallet.DBHandler.COLUMN_VALUE;
 import static com.example.wallet.DBHandler.TABLE_VALUES;
 
@@ -11,9 +13,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -21,8 +25,10 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
-
-public class MonthExpenses  extends MainActivity {
+/*
+Δραστηριότητα για εμφάνιση των μηνιαίων εξόδων και στατιστικών πληροφοριών
+ */
+public class MonthExpenses extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -30,26 +36,26 @@ public class MonthExpenses  extends MainActivity {
     TotalExpensesFragment totalExpensesFragment = new TotalExpensesFragment();
     StatisticsFragment statisticsFragment = new StatisticsFragment();
 
-    private BudgetManager budgetManager = new BudgetManager();
-    private boolean isViewPagerSetup = false;
-    TotalExpensesFragment existingTotalExpensesFragment;
-
-
+    //Ανάκτηση των μηνιαίων εξόδων από τη βάση
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_month);
+        getSupportActionBar().hide();
 
         tabLayout=findViewById(R.id.tablelayout);
         viewPager=findViewById(R.id.viewpager);
 
         Intent intent = getIntent();
         String month = intent.getStringExtra("month");
+
         int monthlySupermarket= 0;
         int monthlyEntertainment= 0;
         int monthlyHome= 0;
         int monthlyTotal= 0;
+        int monthlyTransportation = 0;
+        int monthlyOther = 0;
         String MainMonth = month;
-        DBHandler dbHelper = new DBHandler(this, null, null, 1);
+        DBHandler dbHelper = new DBHandler(this, null, null, 5);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_VALUES, null);
         if (cursor.moveToFirst()) {
@@ -59,15 +65,19 @@ public class MonthExpenses  extends MainActivity {
                 String supermarket = cursor.getString(cursor.getColumnIndex(COLUMN_SUPERMARKET));
                 String entertainment = cursor.getString(cursor.getColumnIndex(COLUMN_ENTERTAINMENT));
                 String home = cursor.getString(cursor.getColumnIndex(COLUMN_HOME));
+                String transportation = cursor.getString(cursor.getColumnIndex(COLUMN_TRANSPORTATION));
+                String other = cursor.getString(cursor.getColumnIndex(COLUMN_OTHER));
+
                 String DBDay = days;
                 String DBDayWithoutFirstCharacter = DBDay.substring(2);
-                //αφαιρούμε τα κενά
                 DBDayWithoutFirstCharacter = DBDayWithoutFirstCharacter.trim();
                 MainMonth = MainMonth.trim();
                 if (DBDayWithoutFirstCharacter.equals(MainMonth)) {
                     monthlySupermarket = monthlySupermarket + Integer.parseInt(supermarket);
                     monthlyEntertainment = monthlyEntertainment + Integer.parseInt(entertainment);
                     monthlyHome = monthlyHome + Integer.parseInt(home);
+                    monthlyTransportation = monthlyTransportation + Integer.parseInt(transportation);
+                    monthlyOther = monthlyOther + Integer.parseInt(other);
                     monthlyTotal = monthlyTotal + Integer.parseInt(value);
                 }
             } while (cursor.moveToNext());
@@ -76,10 +86,10 @@ public class MonthExpenses  extends MainActivity {
         }
 
         setupViewPager();
-        totalExpensesFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome);
-        statisticsFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome);
+        totalExpensesFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome, monthlyTransportation, monthlyOther, false);
+        statisticsFragment.setData(month, monthlyTotal, monthlySupermarket, monthlyEntertainment, monthlyHome, monthlyTransportation, monthlyOther);
 
-
+        //Ενημέρωση του UI ανάλογα με την επιλεγμένη καρτέλα
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -132,9 +142,9 @@ public class MonthExpenses  extends MainActivity {
             }
         });
 
+    }
 
-        }
-
+    //Δημιουργία και ρύθμιση του ViewPager και του Adapter
     private void setupViewPager() {
         tabLayout.setupWithViewPager(viewPager);
         VPAdapter vpAdapter = new VPAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);

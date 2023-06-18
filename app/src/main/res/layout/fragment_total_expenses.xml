@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView5"
+            android:id="@+id/cardView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/month_id"
@@ -32,49 +32,48 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#E1CDCD"
-                android:backgroundTint="#EFDADA">
+                android:background="#F7F9EF"
+                android:backgroundTint="#D8DAD0">
 
                 <TextView
                     android:id="@+id/monthsupermarket_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
                     android:text="Supermarket"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/progressBarSupermarket"
-                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView1"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <EditText
                     android:id="@+id/monthsupermarket_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="64dp"
                     android:text="0"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/monthsupermarket_id"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.474"
-                    app:layout_constraintStart_toEndOf="@+id/monthsupermarket_id"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.312" />
+                    app:layout_constraintTop_toTopOf="@+id/monthsupermarket_id" />
 
                 <ProgressBar
                     android:id="@+id/progressBarSupermarket"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="225dp"
                     android:layout_height="8dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginBottom="16dp"
                     android:backgroundTint="@color/lightGray"
                     android:progressTint="@color/supermarketColor"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/monthsupermarket_id" />
+                    app:layout_constraintStart_toEndOf="@+id/imageView1" />
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/imageView1"
                     android:layout_width="93dp"
                     android:layout_height="70dp"
+                    android:layout_marginStart="8dp"
                     android:src="@drawable/supermarket"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -85,139 +84,162 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/progressBarSupermarket"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.542"
                     app:layout_constraintStart_toEndOf="@+id/progressBarSupermarket"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.745" />
+                    app:layout_constraintTop_toTopOf="@+id/progressBarSupermarket" />
+
+                <Button
+                    android:id="@+id/supermarket_process"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/baseline_create_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
+
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView4"
+            android:id="@+id/cardView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView5">
+            app:layout_constraintTop_toBottomOf="@+id/cardView1">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#F6CABC">
+                android:background="#E6E8DE">
 
                 <TextView
                     android:id="@+id/monthentertainment_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
                     android:text="Entertainment"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView3"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <EditText
                     android:id="@+id/monthentertainment_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="64dp"
                     android:text="0"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/monthentertainment_id"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.448"
-                    app:layout_constraintStart_toEndOf="@+id/monthentertainment_id"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/monthentertainment_id" />
+
                 <ProgressBar
                     android:id="@+id/progressBarEntertainment"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="225dp"
                     android:layout_height="8dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginBottom="16dp"
                     android:backgroundTint="@color/lightGray"
                     android:progressTint="@color/supermarketColor"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/monthentertainment_id" />
+                    app:layout_constraintStart_toEndOf="@+id/imageView2" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/imageView2"
                     android:layout_width="93dp"
                     android:layout_height="70dp"
+                    android:layout_marginStart="8dp"
                     android:src="@drawable/entertainment"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/entertainment_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/progressBarEntertainment"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.542"
                     app:layout_constraintStart_toEndOf="@+id/progressBarEntertainment"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/progressBarEntertainment"
                     app:layout_constraintVertical_bias="0.745" />
 
+                <Button
+                    android:id="@+id/entertainment_process"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/baseline_create_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView6"
+            android:id="@+id/cardView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/cardView4">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EFEBC4"
-                android:backgroundTint="#EFECCF">
+                android:backgroundTint="#F7F9EF">
 
                 <TextView
                     android:id="@+id/monthhome_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
                     android:text="Home"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView4"
+                    app:layout_constraintStart_toEndOf="@+id/imageView3"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <EditText
                     android:id="@+id/monthhome_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="64dp"
                     android:text="0"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/monthhome_id"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.62"
-                    app:layout_constraintStart_toEndOf="@+id/monthhome_id"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.441" />
+                    app:layout_constraintTop_toTopOf="@+id/monthhome_id"
+                    app:layout_constraintVertical_bias="0.48000002" />
+
                 <ProgressBar
                     android:id="@+id/progressBarHome"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="225dp"
                     android:layout_height="8dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginBottom="16dp"
                     android:backgroundTint="@color/lightGray"
                     android:progressTint="@color/supermarketColor"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/monthhome_id" />
+                    app:layout_constraintStart_toEndOf="@+id/imageView3" />
 
                 <ImageView
-                    android:id="@+id/imageView4"
+                    android:id="@+id/imageView3"
                     android:layout_width="93dp"
                     android:layout_height="70dp"
+                    android:layout_marginStart="8dp"
                     android:src="@drawable/home"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -228,42 +250,208 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/progressBarHome"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.542"
                     app:layout_constraintStart_toEndOf="@+id/progressBarHome"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.745" />
+                    app:layout_constraintTop_toTopOf="@+id/progressBarHome" />
+
+                <Button
+                    android:id="@+id/home_process"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/baseline_create_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="247dp" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView7"
+            android:id="@+id/cardView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView6">
+            app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/monthtransportation_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Transportation"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView4"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/monthtransportation_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="64dp"
+                    android:text="0"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/monthtransportation_id"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/monthtransportation_id" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarTransportation"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="225dp"
+                    android:layout_height="8dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/lightGray"
+                    android:progressTint="@color/supermarketColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView4" />
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="93dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/transportation"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.51" />
+
+                <TextView
+                    android:id="@+id/transportation_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    app:layout_constraintBottom_toBottomOf="@+id/progressBarTransportation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/progressBarTransportation"
+                    app:layout_constraintTop_toTopOf="@+id/progressBarTransportation"
+                    app:layout_constraintVertical_bias="0.666" />
+
+                <Button
+                    android:id="@+id/transportation_process"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/baseline_create_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView4">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#D8DAD0">
+
+                <TextView
+                    android:id="@+id/monthother_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Other"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/monthother_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="64dp"
+                    android:text="0"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/monthother_id"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/monthother_id" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarOther"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="225dp"
+                    android:layout_height="8dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/lightGray"
+                    android:progressTint="@color/supermarketColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="93dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/other"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/other_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    app:layout_constraintBottom_toBottomOf="@+id/progressBarOther"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/progressBarOther"
+                    app:layout_constraintTop_toTopOf="@+id/progressBarOther" />
+
+                <Button
+                    android:id="@+id/other_process"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/baseline_create_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView5">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="#D9EAC6"
-                android:backgroundTint="#BAF4BC">
+                android:backgroundTint="#E4EADB">
 
                 <TextView
                     android:id="@+id/monthtotal_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="32dp"
                     android:text="Total"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -275,24 +463,33 @@
                     android:id="@+id/monthtotal_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="64dp"
                     android:text="0"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/monthtotal_id"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.633"
-                    app:layout_constraintStart_toEndOf="@+id/monthtotal_id"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.6" />
+                    app:layout_constraintTop_toTopOf="@+id/monthtotal_id" />
 
                 <ImageView
                     android:id="@+id/imageView6"
                     android:layout_width="93dp"
                     android:layout_height="70dp"
+                    android:layout_marginStart="8dp"
                     android:src="@drawable/total"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="247dp" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"

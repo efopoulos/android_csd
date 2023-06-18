@@ -5,13 +5,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+/*
+Αναπαράσταση ενός στοιχείου λίστας του ημερολογίου στο RecycleView
+ */
 public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 {
     public final TextView dayOfMonth;
     public final TextView totalDayOfMonth;
 
     private final CalendarAdapter.OnItemListener onItemListener;
+
     public CalendarViewHolder(@NonNull View itemView, CalendarAdapter.OnItemListener onItemListener)
     {
         super(itemView);
